@@ -1,0 +1,374 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+
+% Configuración de código Python
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false
+}
+
+\begin{document}
+
+% PORTADA
+\begin{titlepage}
+    \centering
+
+    \vspace{5.5cm}
+    
+    % Logo en el centro
+    \includegraphics[width=0.45\textwidth]{Escudo_UD.png}
+    
+    \vspace{5cm}
+    
+    {\LARGE \textbf{Prophet: Biblioteca de Python para\\
+    \vspace{0.3cm}
+    Pronóstico de Series de Tiempo}}
+    
+    % Facultad debajo del logo
+    {\normalsize Facultad de Ingeniería}
+    
+    \vfill
+    
+    % Datos del autor abajo del todo
+    {\large \textbf{Luis Rojas}}\\
+    {\normalsize Código: 20222020242}
+    
+    \vspace{0.5cm}
+    
+    {\normalsize Probabilidad y Estadística - Grupo 84}\\
+    {\normalsize Docente: Alberto Acosta López}
+    
+    \vspace{0.5cm}
+    
+    {\normalsize Febrero 2026}
+    
+\end{titlepage}
+
+\newpage
+\tableofcontents
+\newpage
+
+% SECCIÓN 1
+\section{Introducción}
+
+Prophet es una biblioteca de código abierto desarrollada por Meta (Facebook) en 2017 para realizar pronósticos automáticos de series de tiempo. Está diseñada para ser accesible a usuarios sin experiencia profunda en modelado estadístico, ofreciendo resultados de alta calidad con configuración mínima.
+
+Una \textbf{serie de tiempo} es una secuencia de observaciones $Y_1, Y_2, \ldots, Y_t$ tomadas en intervalos regulares (diarios, semanales, mensuales), donde cada $Y_t$ es una variable aleatoria que depende del tiempo.
+
+\subsection{Casos de uso}
+
+Prophet es especialmente útil en:
+\begin{itemize}
+    \item \textbf{Finanzas:} Pronóstico de precios y demanda de productos
+    \item \textbf{E-commerce:} Predicción de ventas diarias
+    \item \textbf{Salud:} Proyección de casos de enfermedades
+    \item \textbf{Redes sociales:} Predicción de usuarios activos por día
+    \item \textbf{Clima:} Estimación de temperaturas y fenómenos meteorológicos
+\end{itemize}
+
+% SECCIÓN 2
+\section{Modelo Matemático}
+
+Prophet descompone una serie de tiempo mediante un modelo aditivo:
+
+\begin{equation}
+y(t) = g(t) + s(t) + h(t) + \varepsilon_t
+\end{equation}
+
+Donde cada componente representa:
+
+\begin{itemize}
+    \item \textbf{$g(t)$ - Tendencia:} Crecimiento o decrecimiento a largo plazo. Puede ser:
+    \begin{itemize}
+        \item \textit{Lineal a trozos:} Crecimiento constante con puntos de cambio automáticos
+        \item \textit{Logístico saturado:} Crecimiento que alcanza un límite máximo
+    \end{itemize}
+    
+    \item \textbf{$s(t)$ - Estacionalidad:} Patrones que se repiten periódicamente, modelada con series de Fourier:
+    \begin{equation}
+    s(t) = \sum_{n=1}^{N} \left( a_n \cos\left(\frac{2\pi nt}{P}\right) + b_n \sin\left(\frac{2\pi nt}{P}\right) \right)
+    \end{equation}
+    donde $P$ es el período (7 para semanal, 365.25 para anual).
+    
+    \item \textbf{$h(t)$ - Festivos:} Efectos de días especiales definidos por el usuario (Navidad, Black Friday, etc.)
+    
+    \item \textbf{$\varepsilon_t$ - Error aleatorio:} Componente no explicado por el modelo. Se asume $\varepsilon_t \sim \mathcal{N}(0, \sigma^2)$
+\end{itemize}
+
+\subsection{Estimación de parámetros}
+
+Prophet utiliza inferencia bayesiana mediante Maximum A Posteriori (MAP) para estimar los parámetros del modelo, lo que permite obtener intervalos de confianza bien calibrados que representan la incertidumbre del pronóstico.
+
+% SECCIÓN 3
+\section{Estructura de la API}
+
+\subsection{Clase principal: Prophet}
+
+\subsubsection{Inicialización y configuración}
+
+\begin{lstlisting}
+Prophet(
+    growth='linear',              # Tipo de tendencia
+    yearly_seasonality=True,      # Estacionalidad anual
+    weekly_seasonality=True,      # Estacionalidad semanal
+    daily_seasonality=False,      # Estacionalidad diaria
+    seasonality_mode='additive'   # Modo del modelo
+)
+\end{lstlisting}
+
+\textbf{Parámetros principales:}
+\begin{itemize}
+    \item \texttt{growth}: \texttt{'linear'} o \texttt{'logistic'}
+    \item \texttt{seasonality\_mode}: \texttt{'additive'} o \texttt{'multiplicative'}
+    \item \texttt{changepoint\_prior\_scale}: Flexibilidad de la tendencia (default: 0.05)
+\end{itemize}
+
+\subsubsection{Método fit()}
+
+Ajusta el modelo con datos históricos. Requiere un DataFrame con columnas:
+\begin{itemize}
+    \item \texttt{ds}: Fecha en formato datetime
+    \item \texttt{y}: Valor observado (float)
+\end{itemize}
+
+\begin{lstlisting}
+m = Prophet()
+m.fit(df)
+\end{lstlisting}
+
+\subsubsection{Método make\_future\_dataframe()}
+
+Genera las fechas futuras para las cuales se realizará el pronóstico.
+
+\begin{lstlisting}
+future = m.make_future_dataframe(periods=60, freq='D')
+\end{lstlisting}
+
+\textbf{Parámetros:}
+\begin{itemize}
+    \item \texttt{periods}: Número de períodos futuros a pronosticar
+    \item \texttt{freq}: Frecuencia (\texttt{'D'} diario, \texttt{'W'} semanal, \texttt{'M'} mensual)
+\end{itemize}
+
+\subsubsection{Método predict()}
+
+Calcula el pronóstico con intervalos de confianza.
+
+\begin{lstlisting}
+forecast = m.predict(future)
+\end{lstlisting}
+
+Retorna un DataFrame con las columnas principales:
+\begin{itemize}
+    \item \texttt{yhat}: Pronóstico puntual (valor esperado $\mathbb{E}[Y_t | \text{datos}]$)
+    \item \texttt{yhat\_lower}: Límite inferior del intervalo de confianza 95\%
+    \item \texttt{yhat\_upper}: Límite superior del intervalo de confianza 95\%
+\end{itemize}
+
+\subsubsection{Métodos de visualización}
+
+\textbf{plot(forecast):} Genera gráfico del pronóstico completo con datos históricos, predicción e intervalo de confianza.
+
+\begin{lstlisting}
+fig = m.plot(forecast)
+\end{lstlisting}
+
+\textbf{plot\_components(forecast):} Descompone y visualiza tendencia, estacionalidad y festivos por separado.
+
+\begin{lstlisting}
+fig = m.plot_components(forecast)
+\end{lstlisting}
+
+\subsection{Módulo prophet.diagnostics}
+
+\subsubsection{cross\_validation()}
+
+Realiza validación cruzada temporal para evaluar el rendimiento del modelo.
+
+\begin{lstlisting}
+from prophet.diagnostics import cross_validation
+
+df_cv = cross_validation(
+    model=m,
+    initial='300 days',
+    period='30 days',
+    horizon='60 days'
+)
+\end{lstlisting}
+
+\subsubsection{performance\_metrics()}
+
+Calcula métricas de error a partir de la validación cruzada.
+
+\begin{lstlisting}
+from prophet.diagnostics import performance_metrics
+
+df_metrics = performance_metrics(df_cv)
+\end{lstlisting}
+
+Métricas calculadas:
+\begin{itemize}
+    \item \textbf{RMSE:} Root Mean Squared Error
+    \item \textbf{MAE:} Mean Absolute Error
+    \item \textbf{MAPE:} Mean Absolute Percentage Error
+    \item \textbf{Coverage:} Proporción de observaciones dentro del intervalo de confianza
+\end{itemize}
+
+% SECCIÓN 4
+\section{Ejemplo Práctico}
+
+\subsection{Descripción del problema}
+
+Se pronostica la demanda diaria de un producto para los próximos 60 días, utilizando 400 días de datos históricos simulados con el siguiente modelo generador:
+
+\begin{equation}
+y(t) = 50 + 0.05t + 3\sin\left(\frac{2\pi t}{7}\right) + \varepsilon_t, \quad \varepsilon_t \sim \mathcal{N}(0, 4)
+\end{equation}
+
+\textbf{Componentes del modelo:}
+\begin{itemize}
+    \item Nivel base: 50 unidades/día
+    \item Tendencia: $+0.05$ unidades/día
+    \item Estacionalidad semanal: $\pm 3$ unidades (picos en fines de semana)
+    \item Ruido aleatorio: $\sigma = 2$ unidades
+\end{itemize}
+
+\subsection{Código de implementación}
+
+\begin{lstlisting}
+import numpy as np
+import pandas as pd
+from prophet import Prophet
+import matplotlib.pyplot as plt
+
+# Generar datos simulados (400 dias historicos)
+np.random.seed(42)
+n_dias = 400
+fechas = pd.date_range(start='2020-01-01', periods=n_dias, freq='D')
+
+tendencia = 0.05 * np.arange(n_dias)
+estacionalidad = 3 * np.sin(2 * np.pi * np.arange(n_dias) / 7)
+ruido = np.random.normal(0, 2, n_dias)
+y = 50 + tendencia + estacionalidad + ruido
+
+df = pd.DataFrame({'ds': fechas, 'y': y})
+
+# Crear y entrenar modelo
+m = Prophet(weekly_seasonality=True, yearly_seasonality=False)
+m.fit(df)
+
+# Pronosticar 60 dias
+future = m.make_future_dataframe(periods=60, freq='D')
+forecast = m.predict(future)
+
+# Visualizar
+m.plot(forecast)
+m.plot_components(forecast)
+\end{lstlisting}
+
+\subsection{Resultados e interpretación}
+
+El pronóstico generado incluye:
+
+\begin{enumerate}
+    \item \textbf{Pronóstico puntual (yhat):} Valor esperado $\mathbb{E}[Y_t | \text{datos históricos}]$
+    \item \textbf{Intervalo de confianza 95\%:} $P(Y_t \in [\text{yhat\_lower}, \text{yhat\_upper}]) \approx 0.95$
+    \item \textbf{Descomposición:} Tendencia creciente + oscilaciones semanales identificadas correctamente
+\end{enumerate}
+
+La incertidumbre aumenta con el horizonte temporal, comportamiento estadísticamente esperado: a mayor distancia del último dato observado, mayor es la varianza acumulada del pronóstico.
+
+% SECCIÓN 5
+\section{Relación con Probabilidad y Estadística}
+
+\subsection{Variables aleatorias}
+
+Cada observación $Y_t$ es una variable aleatoria que depende del tiempo. El objetivo de Prophet es estimar su distribución condicional dado el historial de datos.
+
+\subsection{Valor esperado}
+
+El pronóstico puntual \texttt{yhat} representa el valor esperado condicional:
+\begin{equation}
+\hat{y}_t = \mathbb{E}[Y_t \mid Y_1, \ldots, Y_{t-1}]
+\end{equation}
+
+\subsection{Intervalos de confianza}
+
+Los intervalos de confianza al 95\% satisfacen:
+\begin{equation}
+P\left(Y_t \in [\text{yhat\_lower}_t,\ \text{yhat\_upper}_t]\right) \approx 0.95
+\end{equation}
+
+\subsection{Distribución normal}
+
+El error aleatorio se modela como:
+\begin{equation}
+\varepsilon_t \sim \mathcal{N}(0, \sigma^2)
+\end{equation}
+
+\subsection{Inferencia bayesiana}
+
+Prophet utiliza Maximum A Posteriori (MAP) para estimar parámetros, combinando información previa (priors) con los datos observados para obtener estimaciones robustas.
+
+% SECCIÓN 6
+\section{Ventajas y Limitaciones}
+
+\subsection{Ventajas}
+\begin{itemize}
+    \item \textbf{Facilidad de uso:} Resultados de calidad con $\sim$10 líneas de código
+    \item \textbf{Robustez:} Tolera datos faltantes y valores atípicos automáticamente
+    \item \textbf{Interpretabilidad:} Descomposición clara en componentes explicables
+    \item \textbf{Validación estadística:} Intervalos de confianza bien calibrados
+    \item \textbf{Respaldo institucional:} Usado en producción por Meta, Uber y Airbnb
+\end{itemize}
+
+\subsection{Limitaciones}
+\begin{itemize}
+    \item Requiere patrones estacionales claros para funcionar correctamente
+    \item Óptimo para corto-mediano plazo (días, semanas, meses)
+    \item Necesita varios ciclos completos de estacionalidad en los datos históricos
+    \item No captura autocorrelaciones complejas tan bien como modelos ARIMA
+\end{itemize}
+
+% SECCIÓN 7
+\section{Conclusiones}
+
+Prophet democratiza el pronóstico de series de tiempo, combinando accesibilidad con rigor estadístico. Su fundamento matemático $y(t) = g(t) + s(t) + h(t) + \varepsilon_t$ aplica directamente conceptos del curso: variables aleatorias, valor esperado, intervalos de confianza e inferencia bayesiana.
+
+Su principal fortaleza es la interpretabilidad: no solo predice, sino que explica qué componentes impulsan los datos. Su uso en producción por empresas como Meta, Uber y Airbnb demuestra que la teoría estadística es la base de herramientas que generan valor real.
+
+% REFERENCIAS
+\section{Referencias}
+
+\begin{itemize}
+    \item Taylor, S. J., \& Letham, B. (2018). Forecasting at scale. \textit{The American Statistician}, 72(1), 37--45.
+    \item Documentación oficial de Prophet: \url{https://facebook.github.io/prophet}
+    \item Repositorio GitHub del proyecto: \url{https://github.com/LuisRojasR/biblioteca-prophet-python}
+\end{itemize}
+
+\end{document}
