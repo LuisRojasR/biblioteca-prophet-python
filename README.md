@@ -15,6 +15,8 @@ Análisis de la biblioteca Prophet aplicando conceptos de Probabilidad y Estadí
 
 El código puede ejecutarse directamente en Google Colab sin necesidad de instalación adicional o configuración en el entorno local. Esto garantiza la portabilidad y eficiencia al procesar los modelos.
 
+[Abrir en Google Colab](https://colab.research.google.com/drive/17O100qMiPo-9aEzXmtoflpQxk95q4HJS?usp=sharing)
+
 ## Información Académica
 
 **Curso:** Probabilidad y Estadística - Grupo 84
