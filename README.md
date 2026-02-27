@@ -13,7 +13,7 @@ Análisis de la biblioteca Prophet aplicando conceptos de Probabilidad y Estadí
 
 ## Ejecución del código Python en Google Colab
 
-El código puede ejecutarse directamente en Google Colab sin instalación adicional.
+El código puede ejecutarse directamente en Google Colab sin necesidad de instalación adicional o configuración en el entorno local. Esto garantiza la portabilidad y eficiencia al procesar los modelos.
 
 ## Información Académica
 
