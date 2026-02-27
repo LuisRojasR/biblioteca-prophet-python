@@ -18,9 +18,13 @@ El código puede ejecutarse directamente en Google Colab sin instalación adicio
 ## Información Académica
 
 **Curso:** Probabilidad y Estadística - Grupo 84
+
 **Universidad:** Universidad Distrital Francisco José de Caldas
+
 **Docente:** Alberto Acosta López
+
 **Estudiante:** Luis Rojas - 20222020242
+
 **Fecha:** Febrero 2026
 
 ## Documentación oficial
