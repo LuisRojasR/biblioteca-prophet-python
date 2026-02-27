@@ -11,7 +11,7 @@ Análisis de la biblioteca Prophet aplicando conceptos de Probabilidad y Estadí
 - Visualización de componentes (tendencia y estacionalidad)
 - Intervalos de confianza al 95%
 
-## Ejecutar en Google Colab
+## Ejecución del código Python en Google Colab
 
 El código puede ejecutarse directamente en Google Colab sin instalación adicional.
 
