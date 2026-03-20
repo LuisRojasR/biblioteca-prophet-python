@@ -1,0 +1,123 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath, amssymb, geometry, enumitem, hyperref}
+
+% Configuración de márgenes para un informe de ingeniería
+\geometry{top=3cm, bottom=3cm, left=2.5cm, right=2.5cm}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+}
+
+\begin{document}
+
+% --- ENCABEZADO FORMAL ---
+\begin{center}
+    \textbf{\Large Informe Técnico: Distribuciones de Probabilidad (T4)} \\
+    \vspace{0.3cm}
+    \textbf{Asignatura:} Probabilidad y Estadística \\
+    \textbf{Estudiante:} Luis Rojas -- \textbf{Código:} 20222020242 \\
+    \vspace{0.8cm}
+\end{center}
+
+\section*{Enlace de Validación en Python}
+Para la validación de los resultados numéricos y la generación de gráficas estadísticas mediante librerías especializadas, se ha desarrollado un cuaderno en Google Colab accesible en el siguiente enlace: \\
+\url{https://colab.research.google.com/drive/18HrmhbUhUEEPunIL_R-R6kolgjGbjC3q?usp=sharing}
+
+\vspace{0.6cm}
+
+% --- SECCIÓN BINOMIAL ---
+\section{Distribución Binomial (Caso Discreto)}
+
+Desde el punto de vista teórico, la distribución binomial permite modelar el número de éxitos en una secuencia de $n$ ensayos de Bernoulli independientes entre sí. Es fundamental que la probabilidad de éxito $p$ se mantenga constante en cada repetición. Un aspecto relevante es que la dispersión de los datos, representada por la varianza ($npq$), es máxima cuando $p = 0.5$, lo que refleja el mayor nivel de incertidumbre en el experimento.
+
+\vspace{0.4cm}
+\textbf{Aplicación Práctica:} 
+Se realiza el lanzamiento de un dado no alterado 5 veces ($n=5$). Definimos como éxito la aparición de la cara con el número "3" ($p=1/6$). Se requiere hallar la probabilidad de obtener dicho éxito exactamente en 2 ocasiones ($x=2$).
+
+\vspace{0.4cm}
+\textbf{Desarrollo Matemático:}
+Utilizamos la función de masa de probabilidad binomial:
+\[ P(X=x) = \binom{n}{x} p^x q^{n-x} \]
+
+1. Calculamos la combinación desglosando el proceso de factoriales:
+\[ \binom{5}{2} = \left[ \frac{5!}{2!(5-2)!} \right] = \left[ \frac{120}{2 \times 6} \right] = 10 \]
+
+2. Sustituimos los valores y resolvemos las potencias:
+\[ P(X=2) = 10 \times \left( \frac{1}{6} \right)^2 \times \left( \frac{5}{6} \right)^{5-2} \]
+\[ P(X=2) = 10 \times [0.02777] \times [0.57870] \]
+\[ P(X=2) = \mathbf{0.1607} \]
+
+\newpage
+
+% --- SECCIÓN POISSON ---
+\section{Distribución de Poisson (Caso Discreto)}
+
+La distribución de Poisson es el modelo predilecto para describir la ocurrencia de eventos en un intervalo continuo de tiempo o espacio. Se considera a menudo como una forma límite de la distribución binomial para casos donde el tamaño de la muestra es considerablemente grande y la probabilidad de éxito es muy baja. En este modelo, el parámetro $\lambda$ rige tanto el promedio como la variabilidad del proceso, lo que implica que a mayor frecuencia de eventos, mayor es la dispersión de los mismos.
+
+\vspace{0.4cm}
+\textbf{Aplicación Práctica:} 
+Se establece que la probabilidad de que un vehículo sufra un accidente es $p = 0.001$. Ante un flujo de $n = 1000$ autos, se busca determinar la probabilidad de que ocurran 2 o más accidentes ($X \ge 2$).
+
+\vspace{0.4cm}
+\textbf{Desarrollo Matemático:}
+Determinamos la tasa promedio $\lambda = n \times p = 1$. Resolvemos el problema aplicando la probabilidad del complemento $1 - [P(X=0) + P(X=1)]$:
+
+\begin{itemize}
+    \item Cálculo de $P(0)$: $\left[ \frac{e^{-1} \cdot 1^0}{0!} \right] = \left[ \frac{0.367879 \times 1}{1} \right] = 0.367879$
+    \item Cálculo de $P(1)$: $\left[ \frac{e^{-1} \cdot 1^1}{1!} \right] = \left[ \frac{0.367879 \times 1}{1} \right] = 0.367879$
+\end{itemize}
+
+Sustituimos en la ecuación final:
+\[ P(X \ge 2) = 1 - (0.367879 + 0.367879) = 1 - 0.735758 = \mathbf{0.2642} \]
+
+\vspace{0.8cm}
+
+% --- SECCIÓN NORMAL ---
+\section{Distribución Normal (Caso Continuo)}
+
+La distribución normal es el pilar de la estadística inferencial. Su importancia radica en que muchos fenómenos naturales siguen esta distribución de campana simétrica. Para realizar cálculos prácticos, empleamos la estandarización, transformando una variable $X$ en una variable estándar $Z$. Este procedimiento permite usar tablas universales de probabilidad acumulada y aplicar criterios como la regla empírica para identificar la concentración de los datos.
+
+\vspace{0.4cm}
+\textbf{Aplicación Práctica:} 
+Haciendo referencia al ejemplo 6.4 del texto guía Walpole, se debe encontrar el área bajo la curva normal estándar comprendida entre $z = -1.97$ y $z = 0.86$.
+
+\vspace{0.4cm}
+\textbf{Desarrollo Matemático:}
+Utilizamos la resta de las áreas acumuladas para definir el intervalo:
+\[ P(-1.97 < Z < 0.86) = P(Z < 0.86) - P(Z < -1.97) \]
+
+De acuerdo con la tabla de distribución normal:
+\begin{itemize}
+    \item Área acumulada para $z = 0.86$: $0.8051$
+    \item Área acumulada para $z = -1.97$: $0.0244$
+\end{itemize}
+
+\[ P(-1.97 < Z < 0.86) = 0.8051 - 0.0244 = \mathbf{0.7807} \]
+
+\newpage
+
+% --- SECCIÓN EXPONENCIAL ---
+\section{Distribución Exponencial (Caso Continuo)}
+
+Esta distribución se vincula directamente con los procesos de Poisson, modelando el tiempo de espera entre eventos sucesivos. Su característica técnica más relevante es la "falta de memoria", donde el tiempo ya transcurrido no afecta la probabilidad de que el evento ocurra en el futuro. Existe una relación de proporcionalidad inversa entre la tasa de eventos $\lambda$ y el tiempo medio de espera $\mu$.
+
+\vspace{0.4cm}
+\textbf{Aplicación Práctica:} 
+Un servidor presenta un tiempo promedio de respuesta $\mu = 20$ ms. Se requiere calcular la probabilidad de que una solicitud tome un tiempo superior a los 30 ms ($X > 30$).
+
+\vspace{0.4cm}
+\textbf{Desarrollo Matemático:}
+Definimos la tasa $\lambda = 1/20 = 0.05$. Aplicamos la función de supervivencia para hallar el área de la cola derecha:
+\[ P(X > 30) = e^{-(0.05) \times (30)} \]
+
+1. Calculamos el producto del exponente:
+\[ -(0.05 \times 30) = -1.5 \]
+
+2. Evaluamos el valor final mediante la constante de Euler:
+\[ P(X > 30) = e^{-1.5} \approx \mathbf{0.2231} \]
+
+\end{document}
