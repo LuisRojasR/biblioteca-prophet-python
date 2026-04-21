@@ -62,7 +62,7 @@
     \vspace{2cm}
     {\huge\bfseries Informe de avance de datos estadísticos \par}
     \vspace{0.5cm}
-    {\Large Análisis estadístico descriptivo de 60 datos simulados \par}
+    {\Large Análisis estadístico descriptivo de 60 datos simulados con Python \par}
     
     \vspace{2.5cm}
     {\Large\itshape Autores: \par}
@@ -87,7 +87,9 @@
 
 La estadística descriptiva constituye una herramienta fundamental para organizar, resumir y analizar conjuntos de datos, ya que permite identificar patrones, tendencias y niveles de dispersión dentro de una muestra. Su aplicación resulta especialmente importante en contextos académicos, científicos y tecnológicos, donde se requiere transformar datos numéricos en información útil para su interpretación.
 
-En el presente informe se desarrolla un análisis estadístico descriptivo a partir de una muestra simulada de 60 datos enteros comprendidos entre 00 y 99. El contexto seleccionado corresponde a los tiempos de respuesta, medidos en segundos, de 60 estudiantes al resolver un cuestionario corto de estadística en formato digital. Este tema fue elegido por ser coherente con el entorno académico y por permitir aplicar de manera clara las herramientas vistas en clase.
+En el presente informe se desarrolla un análisis estadístico descriptivo a partir de una muestra simulada digitalmente de 60 datos enteros comprendidos entre 00 y 99. El contexto seleccionado corresponde a los tiempos de respuesta, medidos en segundos, de 60 estudiantes al resolver un cuestionario corto de estadística en formato digital. Este tema fue elegido por ser coherente con el entorno académico y por permitir aplicar de manera clara las herramientas vistas en clase.
+
+Es importante destacar que, cumpliendo con los requerimientos de la asignatura, tanto para la generación aleatoria de los datos como para la construcción de las tablas de frecuencias y las representaciones gráficas, se emplearon herramientas computacionales, específicamente el lenguaje de programación Python y sus bibliotecas especializadas en ciencia de datos (\texttt{numpy}, \texttt{pandas}, \texttt{matplotlib} y \texttt{seaborn}).
 
 A lo largo del informe se presentan la organización de los datos, la construcción de tablas de frecuencia, el desarrollo de representaciones gráficas y el cálculo detallado de medidas de tendencia central, dispersión y posición. Finalmente, se realiza una interpretación estadística integral de los resultados obtenidos.
 
@@ -98,16 +100,16 @@ A lo largo del informe se presentan la organización de los datos, la construcci
 
 \subsection{Objetivo general}
 
-Analizar estadísticamente una muestra de 60 datos simulados mediante tablas, gráficos y medidas descriptivas, con el propósito de interpretar su comportamiento y aplicar los conceptos desarrollados en el curso de Probabilidad y Estadística.
+Analizar estadísticamente una muestra de 60 datos simulados mediante tablas, gráficos y medidas descriptivas procesadas computacionalmente, con el propósito de interpretar su comportamiento y aplicar los conceptos desarrollados en el curso de Probabilidad y Estadística.
 
 \subsection{Objetivos específicos}
 
 \begin{itemize}[leftmargin=1.2cm]
-    \item Organizar los datos en tablas estadísticas adecuadas para su análisis.
+    \item Organizar los datos en tablas estadísticas adecuadas para su análisis apoyándose en bibliotecas de Python.
     \item Calcular medidas de tendencia central como media, mediana y moda.
     \item Hallar medidas de dispersión como rango, varianza, desviación estándar, coeficiente de variación y error estándar.
     \item Determinar medidas de posición como cuartiles, deciles y percentiles.
-    \item Representar la información mediante histogramas, gráficos de barras, polígono de frecuencias, ojiva y diagrama de caja y bigotes.
+    \item Representar la información mediante histogramas, gráficos de barras, polígono de frecuencias, ojiva y diagrama de caja y bigotes haciendo uso de herramientas digitales.
     \item Interpretar los resultados obtenidos de forma numérica y gráfica.
 \end{itemize}
 
@@ -141,7 +143,6 @@ Entre los conceptos principales empleados en este informe se encuentran:
     \item \textbf{Error estándar:} estima la variabilidad de la media muestral.
     \item \textbf{Cuartiles, deciles y percentiles:} dividen la distribución ordenada en partes iguales y permiten ubicar la posición relativa de los datos.
     \item \textbf{Asimetría y curtosis:} describen la forma de la distribución.
-    % >>> AÑADIDO: definición explícita de mínimo, máximo y curtosis <<<
     \item \textbf{Valor mínimo y valor máximo:} son la observación más pequeña y la más grande del conjunto de datos, respectivamente. Delimitan el soporte empírico de la distribución.
     \item \textbf{Curtosis:} mide el grado de apuntamiento o achatamiento de la distribución en comparación con la distribución normal. Un valor positivo indica distribución leptocúrtica (más apuntada); un valor negativo indica distribución platicúrtica (más achatada); y un valor igual a cero corresponde a una distribución mesocúrtica.
 \end{itemize}
@@ -155,9 +156,9 @@ Estas herramientas permiten describir tanto la localización de la muestra como 
 
 \subsection{Proceso de recolección y muestreo}
 
-De acuerdo con los lineamientos establecidos para este avance, la recolección de información no se realizó mediante la observación de un fenómeno real, sino a través de un proceso de \textbf{simulación manual controlada}. El procedimiento consistió en generar un conjunto de 60 números enteros, seleccionados al azar bajo la estricta condición de estar comprendidos entre el 00 y el 99. 
+De acuerdo con los lineamientos establecidos para este avance, la recolección de información no se realizó mediante la observación de un fenómeno real, sino a través de un proceso de \textbf{simulación digital controlada} utilizando el lenguaje de programación Python. El procedimiento consistió en generar un conjunto de 60 números enteros, seleccionados al azar mediante el uso de bibliotecas computacionales (como \texttt{numpy.random} o \texttt{random.randint}), bajo la estricta condición de estar comprendidos entre el 00 y el 99. 
 
-Desde el punto de vista teórico, este método de generación de datos equivale a un \textbf{muestreo probabilístico de tipo aleatorio simple}. Se clasifica como probabilístico porque, al elegir los números de forma aleatoria, cualquier valor entero dentro del intervalo [00, 99] tenía teóricamente la misma probabilidad de ser seleccionado para conformar la muestra, evitando así un sesgo de selección intencional (no probabilístico).
+Desde el punto de vista teórico, este método de generación de datos equivale a un \textbf{muestreo probabilístico de tipo aleatorio simple}. Se clasifica como probabilístico porque, al elegir los números de forma aleatoria estructurada, cualquier valor entero dentro del intervalo [00, 99] tenía teóricamente la misma probabilidad de ser seleccionado para conformar la muestra, evitando así un sesgo de selección intencional.
 
 \subsection{Contextualización de los datos}
 
@@ -178,7 +179,7 @@ Al ordenar la información, se identifica que el valor mínimo es 12 y el valor 
 % -------------------------------------------------
 \section{Tabla de frecuencias}
 
-Con el fin de resumir y organizar la información, los datos se agruparon en intervalos de amplitud 10. Para cada intervalo se calculó la frecuencia absoluta, la frecuencia acumulada, la frecuencia relativa y la frecuencia relativa acumulada.
+Con el fin de resumir y organizar la información, los datos se agruparon en intervalos de amplitud 10 (proceso estructurado computacionalmente con la ayuda de \texttt{pandas}). Para cada intervalo se calculó la frecuencia absoluta, la frecuencia acumulada, la frecuencia relativa y la frecuencia relativa acumulada.
 
 \begin{table}[H]
 \centering
@@ -298,9 +299,6 @@ R=92-12=80
 
 Esto significa que entre el menor y el mayor tiempo de respuesta existe una diferencia de 80 segundos.
 
-% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-% SUBSECCIÓN AÑADIDA: VALOR MÍNIMO Y VALOR MÁXIMO
-% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 \subsection{Valor mínimo y valor máximo}
 
 El \textbf{valor mínimo} ($x_{\min}$) es la observación más pequeña del conjunto de datos, y el \textbf{valor máximo} ($x_{\max}$) es la observación más grande. Ambos se identifican directamente a partir de la muestra ordenada de menor a mayor:
@@ -314,8 +312,6 @@ x_{\max} = \max\{x_1, x_2, \ldots, x_n\} = 92
 \]
 
 Estos dos valores delimitan el soporte empírico de la distribución y sirven de base para el cálculo del rango. Se verifica que ambos se encuentran dentro del intervalo permitido de $[00,\, 99]$.
-
-% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 \subsection{Varianza muestral}
 
@@ -416,9 +412,6 @@ SE=\frac{18.67}{7.746}=2.41
 
 Este valor representa la variabilidad de la media muestral con respecto a una posible media poblacional.
 
-% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-% SUBSECCIÓN AÑADIDA: CURTOSIS
-% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 \subsection{Curtosis}
 
 La curtosis es una medida de forma que indica el grado de apuntamiento o achatamiento de la distribución en relación con la distribución normal. Se emplea el \textbf{coeficiente de curtosis muestral de Fisher} (exceso de curtosis), cuya fórmula es:
@@ -475,8 +468,6 @@ s^4 = (18.67)^4 = 121{,}614.11
 \]
 
 \textbf{Interpretación:} como $g_2 = -0.50 < 0$, la distribución es \textbf{platicúrtica}. Esto significa que la curva es más achatada que la distribución normal, con menor concentración de datos alrededor de la media y colas relativamente más cortas y uniformes.
-
-% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 % -------------------------------------------------
 % MEDIDAS DE POSICIÓN
@@ -645,7 +636,7 @@ Asimismo, la curtosis obtenida indica que la distribución no es excesivamente a
 % -------------------------------------------------
 \section{Representaciones gráficas}
 
-A continuación se presentan las gráficas estadísticas construidas a partir de la muestra analizada.
+A continuación se presentan las gráficas estadísticas construidas a partir de la muestra analizada, las cuales fueron procesadas y renderizadas utilizando bibliotecas de Python como \texttt{matplotlib} y \texttt{seaborn}.
 
 \begin{figure}[H]
     \centering
@@ -712,18 +703,14 @@ Desde el punto de vista gráfico, el histograma, el gráfico de barras y el pol�
 \section{Conclusiones}
 
 \begin{itemize}[leftmargin=1.2cm]
-    \item La muestra simulada de 60 datos permitió aplicar de forma completa los principales conceptos de la estadística descriptiva.
+    \item La muestra simulada de 60 datos permitió aplicar de forma completa los principales conceptos de la estadística descriptiva empleando herramientas computacionales en Python.
     \item La media aritmética fue de 50.48 y la mediana fue de 50, lo cual indica una concentración de los tiempos de respuesta en la parte central de la distribución.
     \item La distribución es multimodal, debido a que varios valores presentaron la misma frecuencia máxima.
     \item La varianza muestral fue de 348.46 y la desviación estándar de 18.67, resultados que evidencian una dispersión moderada.
     \item El rango de 80 y el rango intercuartílico de 26.25 muestran que, aunque existen diferencias amplias entre los extremos, la mayor parte de los datos se concentra en una zona central relativamente estable.
     \item Las gráficas elaboradas complementan adecuadamente el análisis numérico y permiten interpretar de forma visual la concentración, acumulación y dispersión de la muestra.
-    % >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    % CONCLUSIONES AÑADIDAS
-    % >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     \item El valor mínimo de la muestra fue de 12 segundos y el valor máximo de 92 segundos, lo que delimita un rango total de 80 segundos y confirma que todos los datos se encuentran dentro del intervalo permitido.
     \item El coeficiente de curtosis muestral obtenido fue $g_2 = -0.50$, lo que indica que la distribución es \textbf{platicúrtica}: ligeramente más achatada que la distribución normal, con menor concentración de datos en torno a la media y colas más uniformes.
-    % >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 \end{itemize}
 
 % -------------------------------------------------
@@ -732,6 +719,7 @@ Desde el punto de vista gráfico, el histograma, el gráfico de barras y el pol�
 \section{Referencias}
 
 \begin{itemize}[leftmargin=1.2cm]
+    \item Repositorio y código fuente del análisis computacional en Python: \url{https://github.com/LuisRojasR/biblioteca-prophet-python/blob/81d8f26f4ad77705a5e970e26182d53242959672/Talleres\%20Probabilidad\%20y\%20Estadistica/Informe_Estadistica-2.pdf}
     \item Triola, M. F. (2018). \textit{Estadística} (12.ª ed.). Pearson Educación.
     \item Walpole, R. E., Myers, R. H., Myers, S. L., \& Ye, K. (2012). \textit{Probabilidad y estadística para ingeniería y ciencias} (9.ª ed.). Pearson Educación.
 \end{itemize}
