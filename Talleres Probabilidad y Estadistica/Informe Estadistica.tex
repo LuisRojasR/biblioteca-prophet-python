@@ -1,0 +1,739 @@
+\documentclass[12pt,letterpaper]{article}
+
+% -------------------------------------------------
+% PAQUETES
+% -------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-nodecimaldot]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{amsmath, amssymb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+
+% -------------------------------------------------
+% CONFIGURACIÓN GENERAL TIPO APA
+% -------------------------------------------------
+\geometry{
+    top=2.54cm,
+    bottom=2.54cm,
+    left=2.54cm,
+    right=2.54cm
+}
+\setlength{\parindent}{1.27cm}
+\setlength{\parskip}{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% -------------------------------------------------
+% DOCUMENTO
+% -------------------------------------------------
+\begin{document}
+
+% -------------------------------------------------
+% PORTADA
+% -------------------------------------------------
+\begin{titlepage}
+    \thispagestyle{empty} % Quita el número de página de la portada
+    \setstretch{1} % Forzar espacio sencillo para que todo quepa
+    \centering
+    
+    \vspace*{0.5cm}
+    \includegraphics[width=0.35\textwidth]{Escudo UD.png} \par
+    
+    \vspace{1cm}
+    {\scshape\Large Facultad de Ingeniería \par}
+    {\large Universidad Distrital Francisco José de Caldas \par}
+    
+    \vspace{2cm}
+    {\huge\bfseries Informe de avance de datos estadísticos \par}
+    \vspace{0.5cm}
+    {\Large Análisis estadístico descriptivo de 60 datos simulados \par}
+    
+    \vspace{2.5cm}
+    {\Large\itshape Autores: \par}
+    \vspace{0.5cm}
+    {\large Luis Fernando Rojas Rada -- 20222020242 \par}
+    {\large Alejandro Sánchez Escobar -- 20222020252 \par}
+    
+    \vspace{2.5cm}
+    {\large Probabilidad y Estadística \par}
+    
+    \vfill
+    {\large \today \par}
+\end{titlepage}
+
+\newpage
+\setstretch{2} % Aquí vuelve el doble espacio para el resto del informe
+
+% -------------------------------------------------
+% INTRODUCCIÓN
+% -------------------------------------------------
+\section{Introducción}
+
+La estadística descriptiva constituye una herramienta fundamental para organizar, resumir y analizar conjuntos de datos, ya que permite identificar patrones, tendencias y niveles de dispersión dentro de una muestra. Su aplicación resulta especialmente importante en contextos académicos, científicos y tecnológicos, donde se requiere transformar datos numéricos en información útil para su interpretación.
+
+En el presente informe se desarrolla un análisis estadístico descriptivo a partir de una muestra simulada de 60 datos enteros comprendidos entre 00 y 99. El contexto seleccionado corresponde a los tiempos de respuesta, medidos en segundos, de 60 estudiantes al resolver un cuestionario corto de estadística en formato digital. Este tema fue elegido por ser coherente con el entorno académico y por permitir aplicar de manera clara las herramientas vistas en clase.
+
+A lo largo del informe se presentan la organización de los datos, la construcción de tablas de frecuencia, el desarrollo de representaciones gráficas y el cálculo detallado de medidas de tendencia central, dispersión y posición. Finalmente, se realiza una interpretación estadística integral de los resultados obtenidos.
+
+% -------------------------------------------------
+% OBJETIVOS
+% -------------------------------------------------
+\section{Objetivos}
+
+\subsection{Objetivo general}
+
+Analizar estadísticamente una muestra de 60 datos simulados mediante tablas, gráficos y medidas descriptivas, con el propósito de interpretar su comportamiento y aplicar los conceptos desarrollados en el curso de Probabilidad y Estadística.
+
+\subsection{Objetivos específicos}
+
+\begin{itemize}[leftmargin=1.2cm]
+    \item Organizar los datos en tablas estadísticas adecuadas para su análisis.
+    \item Calcular medidas de tendencia central como media, mediana y moda.
+    \item Hallar medidas de dispersión como rango, varianza, desviación estándar, coeficiente de variación y error estándar.
+    \item Determinar medidas de posición como cuartiles, deciles y percentiles.
+    \item Representar la información mediante histogramas, gráficos de barras, polígono de frecuencias, ojiva y diagrama de caja y bigotes.
+    \item Interpretar los resultados obtenidos de forma numérica y gráfica.
+\end{itemize}
+
+% -------------------------------------------------
+% PLANTEAMIENTO DEL PROBLEMA
+% -------------------------------------------------
+\section{Planteamiento del problema}
+
+En ambientes académicos mediados por herramientas digitales, el tiempo de respuesta de un estudiante frente a una actividad puede dar información relevante sobre su ritmo de trabajo, su comprensión del tema y su capacidad de interacción con el medio virtual. Por ello, resulta pertinente analizar una muestra de tiempos de respuesta para describir su comportamiento estadístico.
+
+En este trabajo se plantea el estudio de 60 tiempos de respuesta simulados, medidos en segundos, correspondientes a 60 estudiantes que resolvieron un cuestionario corto de estadística. A partir de estos datos se busca responder la siguiente pregunta: \textit{¿cómo se distribuyen los tiempos de respuesta de los estudiantes y qué medidas estadísticas permiten describir e interpretar adecuadamente esta distribución?}
+
+% -------------------------------------------------
+% MARCO TEÓRICO
+% -------------------------------------------------
+\section{Marco teórico}
+
+La estadística descriptiva es la rama de la estadística encargada de recolectar, organizar, presentar y resumir un conjunto de datos. Su objetivo es convertir una gran cantidad de observaciones numéricas en información comprensible, útil y ordenada.
+
+Entre los conceptos principales empleados en este informe se encuentran:
+
+\begin{itemize}[leftmargin=1.2cm]
+    \item \textbf{Tabla de frecuencias:} organiza los datos en intervalos y muestra cuántas observaciones hay en cada clase.
+    \item \textbf{Media aritmética:} representa el promedio del conjunto de datos.
+    \item \textbf{Mediana:} corresponde al valor central cuando los datos se ordenan de menor a mayor.
+    \item \textbf{Moda:} es el valor o conjunto de valores que más se repiten.
+    \item \textbf{Rango:} es la diferencia entre el valor máximo y el valor mínimo.
+    \item \textbf{Varianza:} mide la dispersión cuadrática de los datos respecto a la media.
+    \item \textbf{Desviación estándar:} corresponde a la raíz cuadrada de la varianza.
+    \item \textbf{Coeficiente de variación:} expresa la dispersión relativa en porcentaje.
+    \item \textbf{Error estándar:} estima la variabilidad de la media muestral.
+    \item \textbf{Cuartiles, deciles y percentiles:} dividen la distribución ordenada en partes iguales y permiten ubicar la posición relativa de los datos.
+    \item \textbf{Asimetría y curtosis:} describen la forma de la distribución.
+    % >>> AÑADIDO: definición explícita de mínimo, máximo y curtosis <<<
+    \item \textbf{Valor mínimo y valor máximo:} son la observación más pequeña y la más grande del conjunto de datos, respectivamente. Delimitan el soporte empírico de la distribución.
+    \item \textbf{Curtosis:} mide el grado de apuntamiento o achatamiento de la distribución en comparación con la distribución normal. Un valor positivo indica distribución leptocúrtica (más apuntada); un valor negativo indica distribución platicúrtica (más achatada); y un valor igual a cero corresponde a una distribución mesocúrtica.
+\end{itemize}
+
+Estas herramientas permiten describir tanto la localización de la muestra como su nivel de dispersión y la forma general de su distribución.
+
+% -------------------------------------------------
+% DATOS DE LA MUESTRA Y TIPO DE MUESTREO
+% -------------------------------------------------
+\section{Datos de la muestra y proceso de muestreo}
+
+\subsection{Proceso de recolección y muestreo}
+
+De acuerdo con los lineamientos establecidos para este avance, la recolección de información no se realizó mediante la observación de un fenómeno real, sino a través de un proceso de \textbf{simulación manual controlada}. El procedimiento consistió en generar un conjunto de 60 números enteros, seleccionados al azar bajo la estricta condición de estar comprendidos entre el 00 y el 99. 
+
+Desde el punto de vista teórico, este método de generación de datos equivale a un \textbf{muestreo probabilístico de tipo aleatorio simple}. Se clasifica como probabilístico porque, al elegir los números de forma aleatoria, cualquier valor entero dentro del intervalo [00, 99] tenía teóricamente la misma probabilidad de ser seleccionado para conformar la muestra, evitando así un sesgo de selección intencional (no probabilístico).
+
+\subsection{Contextualización de los datos}
+
+Para dotar a la muestra de un significado práctico y coherente que permitiera un análisis lógico, se definió de manera autónoma el siguiente contexto: los 60 valores generados representan los \textit{tiempos de respuesta, medidos en segundos}, que tardaron 60 estudiantes universitarios en completar un cuestionario corto de estadística en una plataforma digital.
+
+Los 60 datos (en segundos) obtenidos tras la simulación son los siguientes:
+
+\begin{align*}
+&12, 18, 21, 22, 24, 25, 27, 27, 29, 30, 31, 33, 34, 35, 36, 38, 39, 40, 41, 41, \\
+&42, 43, 44, 45, 46, 47, 47, 48, 49, 50, 50, 51, 52, 53, 54, 54, 55, 56, 57, 58, \\
+&59, 60, 60, 61, 62, 63, 64, 65, 66, 68, 70, 72, 74, 76, 78, 80, 82, 85, 88, 92
+\end{align*}
+
+Al ordenar la información, se identifica que el valor mínimo es 12 y el valor máximo es 92, lo cual confirma que todos los datos cumplen con la restricción inicial de estar entre 00 y 99.
+
+% -------------------------------------------------
+% TABLA DE FRECUENCIAS
+% -------------------------------------------------
+\section{Tabla de frecuencias}
+
+Con el fin de resumir y organizar la información, los datos se agruparon en intervalos de amplitud 10. Para cada intervalo se calculó la frecuencia absoluta, la frecuencia acumulada, la frecuencia relativa y la frecuencia relativa acumulada.
+
+\begin{table}[H]
+\centering
+\caption{Tabla de frecuencias agrupadas}
+\begin{tabular}{cccccc}
+\toprule
+Intervalo & Marca de clase & $f_i$ & $F_i$ & $h_i$ & $H_i$ \\
+\midrule
+10--19 & 14.5 & 2  & 2  & 0.0333 & 0.0333 \\
+20--29 & 24.5 & 7  & 9  & 0.1167 & 0.1500 \\
+30--39 & 34.5 & 8  & 17 & 0.1333 & 0.2833 \\
+40--49 & 44.5 & 12 & 29 & 0.2000 & 0.4833 \\
+50--59 & 54.5 & 12 & 41 & 0.2000 & 0.6833 \\
+60--69 & 64.5 & 9  & 50 & 0.1500 & 0.8333 \\
+70--79 & 74.5 & 5  & 55 & 0.0833 & 0.9167 \\
+80--89 & 84.5 & 4  & 59 & 0.0667 & 0.9833 \\
+90--99 & 94.5 & 1  & 60 & 0.0167 & 1.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La tabla anterior permite observar que los intervalos con mayor frecuencia son 40--49 y 50--59, cada uno con 12 observaciones. Esto indica que la mayor concentración de datos se ubica en la zona central de la distribución.
+
+% -------------------------------------------------
+% DESARROLLO MANUAL
+% -------------------------------------------------
+\section{Desarrollo manual de las medidas estadísticas}
+
+\subsection{Media aritmética}
+
+La media aritmética se calcula mediante la expresión:
+
+\[
+\bar{x}=\frac{\sum x_i}{n}
+\]
+
+En este caso, se realiza la suma completa de los 60 datos:
+
+\begin{align*}
+\sum x_i =\ &12+18+21+22+24+25+27+27+29+30 \\
+&+31+33+34+35+36+38+39+40+41+41 \\
+&+42+43+44+45+46+47+47+48+49+50 \\
+&+50+51+52+53+54+54+55+56+57+58 \\
+&+59+60+60+61+62+63+64+65+66+68 \\
+&+70+72+74+76+78+80+82+85+88+92
+\end{align*}
+
+\[
+\sum x_i = 3029
+\]
+
+Como el tamaño de la muestra es:
+
+\[
+n=60
+\]
+
+entonces:
+
+\[
+\bar{x}=\frac{3029}{60}=50.4833
+\]
+
+Aproximando a dos decimales:
+
+\[
+\bar{x}=50.48
+\]
+
+Por lo tanto, el promedio de tiempo de respuesta de los estudiantes fue de 50.48 segundos.
+
+\subsection{Mediana}
+
+Para hallar la mediana, primero se ordenan los datos de menor a mayor. Como la cantidad de datos es par, la mediana corresponde al promedio entre los valores ubicados en las posiciones 30 y 31.
+
+\[
+\frac{n}{2}=30, \qquad \frac{n}{2}+1=31
+\]
+
+En la muestra ordenada:
+
+\[
+x_{30}=50,\qquad x_{31}=50
+\]
+
+Por tanto:
+
+\[
+Md=\frac{x_{30}+x_{31}}{2}=\frac{50+50}{2}=50
+\]
+
+La mediana muestra que el punto central de la distribución es 50 segundos.
+
+\subsection{Moda}
+
+La moda es el valor que más se repite dentro del conjunto de datos. Al revisar la muestra se observa que los números 27, 41, 47, 50, 54 y 60 aparecen dos veces, mientras que el resto de los datos aparece una sola vez.
+
+Por consiguiente, la distribución es \textbf{multimodal} y sus modas son:
+
+\[
+Mo=\{27,\ 41,\ 47,\ 50,\ 54,\ 60\}
+\]
+
+\subsection{Rango}
+
+El rango se obtiene restando el valor mínimo al valor máximo de la muestra:
+
+\[
+R=x_{\max}-x_{\min}
+\]
+
+Sustituyendo:
+
+\[
+R=92-12=80
+\]
+
+Esto significa que entre el menor y el mayor tiempo de respuesta existe una diferencia de 80 segundos.
+
+% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+% SUBSECCIÓN AÑADIDA: VALOR MÍNIMO Y VALOR MÁXIMO
+% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\subsection{Valor mínimo y valor máximo}
+
+El \textbf{valor mínimo} ($x_{\min}$) es la observación más pequeña del conjunto de datos, y el \textbf{valor máximo} ($x_{\max}$) es la observación más grande. Ambos se identifican directamente a partir de la muestra ordenada de menor a mayor:
+
+\[
+x_{\min} = \min\{x_1, x_2, \ldots, x_n\} = 12
+\]
+
+\[
+x_{\max} = \max\{x_1, x_2, \ldots, x_n\} = 92
+\]
+
+Estos dos valores delimitan el soporte empírico de la distribución y sirven de base para el cálculo del rango. Se verifica que ambos se encuentran dentro del intervalo permitido de $[00,\, 99]$.
+
+% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+\subsection{Varianza muestral}
+
+La varianza muestral se calculó con la fórmula abreviada:
+
+\[
+s^2=\frac{\sum x_i^2-\frac{(\sum x_i)^2}{n}}{n-1}
+\]
+
+Para aplicar la fórmula, primero se calcula la suma de los cuadrados de todos los datos:
+
+\begin{align*}
+\sum x_i^2 =\ &12^2+18^2+21^2+22^2+24^2+25^2+27^2+27^2+29^2+30^2 \\
+&+31^2+33^2+34^2+35^2+36^2+38^2+39^2+40^2+41^2+41^2 \\
+&+42^2+43^2+44^2+45^2+46^2+47^2+47^2+48^2+49^2+50^2 \\
+&+50^2+51^2+52^2+53^2+54^2+54^2+55^2+56^2+57^2+58^2 \\
+&+59^2+60^2+60^2+61^2+62^2+63^2+64^2+65^2+66^2+68^2 \\
+&+70^2+72^2+74^2+76^2+78^2+80^2+82^2+85^2+88^2+92^2
+\end{align*}
+
+\[
+\sum x_i^2 = 173473
+\]
+
+Ahora se reemplaza en la fórmula:
+
+\[
+s^2=\frac{173473-\frac{(3029)^2}{60}}{59}
+\]
+
+\[
+s^2=\frac{173473-\frac{9174841}{60}}{59}
+\]
+
+\[
+s^2=\frac{173473-152914.0167}{59}
+\]
+
+\[
+s^2=\frac{20558.9833}{59}=348.4573
+\]
+
+Aproximando:
+
+\[
+s^2=348.46
+\]
+
+\subsection{Desviación estándar}
+
+La desviación estándar se obtiene calculando la raíz cuadrada de la varianza:
+
+\[
+s=\sqrt{348.4573}=18.6670
+\]
+
+Aproximando a dos decimales:
+
+\[
+s=18.67
+\]
+
+Esto quiere decir que, en promedio, los datos se alejan 18.67 segundos respecto a la media.
+
+\subsection{Coeficiente de variación}
+
+El coeficiente de variación se calcula con la fórmula:
+
+\[
+CV=\frac{s}{\bar{x}}\times 100
+\]
+
+Sustituyendo los valores obtenidos:
+
+\[
+CV=\frac{18.67}{50.48}\times 100=36.98\%
+\]
+
+Este resultado indica que la dispersión relativa de la muestra es moderada.
+
+\subsection{Error estándar}
+
+El error estándar se calcula como:
+
+\[
+SE=\frac{s}{\sqrt{n}}
+\]
+
+Entonces:
+
+\[
+SE=\frac{18.67}{\sqrt{60}}
+\]
+
+\[
+SE=\frac{18.67}{7.746}=2.41
+\]
+
+Este valor representa la variabilidad de la media muestral con respecto a una posible media poblacional.
+
+% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+% SUBSECCIÓN AÑADIDA: CURTOSIS
+% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\subsection{Curtosis}
+
+La curtosis es una medida de forma que indica el grado de apuntamiento o achatamiento de la distribución en relación con la distribución normal. Se emplea el \textbf{coeficiente de curtosis muestral de Fisher} (exceso de curtosis), cuya fórmula es:
+
+\[
+g_2 = \frac{n(n+1)}{(n-1)(n-2)(n-3)}\cdot\frac{\displaystyle\sum_{i=1}^{n}(x_i-\bar{x})^4}{s^4}
+     \ -\ \frac{3(n-1)^2}{(n-2)(n-3)}
+\]
+
+donde $n=60$, $\bar{x}=50.48$ y $s=18.67$.
+
+\textbf{Paso 1.} Suma de las cuartas potencias de las desviaciones respecto a la media:
+
+\[
+\sum_{i=1}^{60}(x_i-\bar{x})^4 = 17{,}218{,}098.40
+\]
+
+\textbf{Paso 2.} Cuarta potencia de la desviación estándar:
+
+\[
+s^4 = (18.67)^4 = 121{,}614.11
+\]
+
+\textbf{Paso 3.} Factor de corrección muestral:
+
+\[
+\frac{n(n+1)}{(n-1)(n-2)(n-3)}
+= \frac{60 \times 61}{59 \times 58 \times 57}
+= \frac{3{,}660}{195{,}006}
+= 0.018769
+\]
+
+\textbf{Paso 4.} Primer término de la fórmula:
+
+\[
+0.018769 \times \frac{17{,}218{,}098.40}{121{,}614.11}
+= 0.018769 \times 141.58
+= 2.657
+\]
+
+\textbf{Paso 5.} Término de corrección:
+
+\[
+\frac{3(n-1)^2}{(n-2)(n-3)}
+= \frac{3 \times 59^2}{58 \times 57}
+= \frac{10{,}443}{3{,}306}
+= 3.159
+\]
+
+\textbf{Paso 6.} Coeficiente de curtosis:
+
+\[
+\boxed{g_2 = 2.657 - 3.159 = -0.50}
+\]
+
+\textbf{Interpretación:} como $g_2 = -0.50 < 0$, la distribución es \textbf{platicúrtica}. Esto significa que la curva es más achatada que la distribución normal, con menor concentración de datos alrededor de la media y colas relativamente más cortas y uniformes.
+
+% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+% -------------------------------------------------
+% MEDIDAS DE POSICIÓN
+% -------------------------------------------------
+\section{Medidas de posición}
+
+\subsection{Cuartiles}
+
+La posición de los cuartiles se calcula mediante:
+
+\[
+L_{Q_k}=\frac{k(n+1)}{4}
+\]
+
+\textbf{Primer cuartil:}
+
+\[
+L_{Q_1}=\frac{1(60+1)}{4}=15.25
+\]
+
+Esto significa que el primer cuartil se encuentra entre las posiciones 15 y 16 del arreglo ordenado:
+
+\[
+x_{15}=36,\qquad x_{16}=38
+\]
+
+Interpolando:
+
+\[
+Q_1=36+0.25(38-36)=36.50
+\]
+
+\textbf{Segundo cuartil:}
+
+\[
+L_{Q_2}=\frac{2(60+1)}{4}=30.5
+\]
+
+Está entre los valores:
+
+\[
+x_{30}=50,\qquad x_{31}=50
+\]
+
+Por tanto:
+
+\[
+Q_2=50
+\]
+
+\textbf{Tercer cuartil:}
+
+\[
+L_{Q_3}=\frac{3(60+1)}{4}=45.75
+\]
+
+Se encuentra entre las posiciones 45 y 46:
+
+\[
+x_{45}=62,\qquad x_{46}=63
+\]
+
+Entonces:
+
+\[
+Q_3=62+0.75(63-62)=62.75
+\]
+
+\subsection{Rango intercuartílico}
+
+El rango intercuartílico se calcula como:
+
+\[
+IQR=Q_3-Q_1
+\]
+
+\[
+IQR=62.75-36.50=26.25
+\]
+
+Este resultado indica que el 50\% central de los datos está contenido en un intervalo de 26.25 segundos.
+
+\subsection{Deciles}
+
+La posición de los deciles se obtiene con:
+
+\[
+L_{D_k}=\frac{k(n+1)}{10}
+\]
+
+\textbf{Primer decil:}
+
+\[
+L_{D_1}=\frac{1(61)}{10}=6.1
+\]
+
+Se ubica entre los datos:
+
+\[
+x_6=25,\qquad x_7=27
+\]
+
+Entonces:
+
+\[
+D_1=25+0.1(27-25)=25.2
+\]
+
+\textbf{Quinto decil:}
+
+\[
+L_{D_5}=\frac{5(61)}{10}=30.5
+\]
+
+Por tanto:
+
+\[
+D_5=50
+\]
+
+\textbf{Noveno decil:}
+
+\[
+L_{D_9}=\frac{9(61)}{10}=54.9
+\]
+
+Se ubica entre:
+
+\[
+x_{54}=76,\qquad x_{55}=78
+\]
+
+Entonces:
+
+\[
+D_9=76+0.9(78-76)=77.8
+\]
+
+\subsection{Percentiles}
+
+La posición de los percentiles se calcula mediante:
+
+\[
+L_{P_k}=\frac{k(n+1)}{100}
+\]
+
+Los percentiles más representativos de esta distribución son:
+
+\[
+P_{25}=36.50,\qquad P_{50}=50,\qquad P_{75}=62.75
+\]
+
+Estos valores coinciden con los cuartiles \(Q_1\), \(Q_2\) y \(Q_3\), respectivamente.
+
+% -------------------------------------------------
+% FORMA DE LA DISTRIBUCIÓN
+% -------------------------------------------------
+\section{Forma de la distribución}
+
+La distribución presenta una ligera asimetría positiva, ya que los valores altos se extienden un poco más hacia la derecha. Esto se relaciona con la presencia de observaciones como 80, 82, 85, 88 y 92, que amplían la cola superior de la muestra.
+
+Asimismo, la curtosis obtenida indica que la distribución no es excesivamente apuntada, sino más bien moderada en su forma general. En conjunto, estos resultados son coherentes con una muestra centrada alrededor de 50 segundos y con dispersión media.
+
+% -------------------------------------------------
+% REPRESENTACIONES GRÁFICAS
+% -------------------------------------------------
+\section{Representaciones gráficas}
+
+A continuación se presentan las gráficas estadísticas construidas a partir de la muestra analizada.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{histograma.png}
+    \caption{Histograma de los tiempos de respuesta}
+\end{figure}
+
+El histograma evidencia que la mayor concentración de datos se ubica entre 40 y 69 segundos, lo que confirma que la distribución se concentra en la zona media.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{barras_frecuencia.png}
+    \caption{Gráfico de barras de frecuencias por intervalo}
+\end{figure}
+
+El gráfico de barras permite comparar con claridad la frecuencia absoluta de cada intervalo y muestra que los intervalos 40--49 y 50--59 son los más representativos de la muestra.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{poligono_frecuencia.png}
+    \caption{Polígono de frecuencias}
+\end{figure}
+
+El polígono de frecuencias muestra un aumento progresivo hasta alcanzar la mayor concentración en la parte central y luego una disminución hacia los extremos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{ojiva.png}
+    \caption{Ojiva de frecuencias acumuladas}
+\end{figure}
+
+La ojiva permite observar cómo se va acumulando la frecuencia a medida que avanzan los intervalos y confirma que hacia la zona media ya se ha reunido más de la mitad de las observaciones.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{ojiva_relativa.png}
+    \caption{Ojiva de frecuencias relativas acumuladas}
+\end{figure}
+
+La ojiva relativa facilita la interpretación porcentual de los datos acumulados y complementa el análisis de la distribución por intervalos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.60\textwidth]{caja_bigotes.png}
+    \caption{Diagrama de caja y bigotes}
+\end{figure}
+
+El diagrama de caja y bigotes resume visualmente los cuartiles, la mediana y la dispersión de la muestra, mostrando una estructura relativamente estable en el centro y sin valores atípicos extremos.
+
+% -------------------------------------------------
+% INTERPRETACIÓN GENERAL
+% -------------------------------------------------
+\section{Interpretación general de los resultados}
+
+Los resultados obtenidos permiten concluir que la muestra presenta una clara concentración alrededor de 50 segundos, valor que coincide aproximadamente con la media y exactamente con la mediana. Esto indica que el tiempo típico de respuesta de los estudiantes se encuentra en la zona central de la distribución.
+
+La dispersión de la muestra puede considerarse moderada, ya que la desviación estándar fue de 18.67 y el coeficiente de variación de 36.98\%. Además, el rango intercuartílico de 26.25 evidencia que el 50\% central de los datos se mantiene relativamente concentrado.
+
+Desde el punto de vista gráfico, el histograma, el gráfico de barras y el polígono de frecuencias muestran una distribución con mayor densidad en los intervalos 40--49 y 50--59. Por su parte, la ojiva confirma el comportamiento acumulado de los datos, mientras que el diagrama de caja refuerza la interpretación de una distribución centrada y con ligera asimetría positiva.
+
+% -------------------------------------------------
+% CONCLUSIONES
+% -------------------------------------------------
+\section{Conclusiones}
+
+\begin{itemize}[leftmargin=1.2cm]
+    \item La muestra simulada de 60 datos permitió aplicar de forma completa los principales conceptos de la estadística descriptiva.
+    \item La media aritmética fue de 50.48 y la mediana fue de 50, lo cual indica una concentración de los tiempos de respuesta en la parte central de la distribución.
+    \item La distribución es multimodal, debido a que varios valores presentaron la misma frecuencia máxima.
+    \item La varianza muestral fue de 348.46 y la desviación estándar de 18.67, resultados que evidencian una dispersión moderada.
+    \item El rango de 80 y el rango intercuartílico de 26.25 muestran que, aunque existen diferencias amplias entre los extremos, la mayor parte de los datos se concentra en una zona central relativamente estable.
+    \item Las gráficas elaboradas complementan adecuadamente el análisis numérico y permiten interpretar de forma visual la concentración, acumulación y dispersión de la muestra.
+    % >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    % CONCLUSIONES AÑADIDAS
+    % >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    \item El valor mínimo de la muestra fue de 12 segundos y el valor máximo de 92 segundos, lo que delimita un rango total de 80 segundos y confirma que todos los datos se encuentran dentro del intervalo permitido.
+    \item El coeficiente de curtosis muestral obtenido fue $g_2 = -0.50$, lo que indica que la distribución es \textbf{platicúrtica}: ligeramente más achatada que la distribución normal, con menor concentración de datos en torno a la media y colas más uniformes.
+    % >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\end{itemize}
+
+% -------------------------------------------------
+% REFERENCIAS
+% -------------------------------------------------
+\section{Referencias}
+
+\begin{itemize}[leftmargin=1.2cm]
+    \item Triola, M. F. (2018). \textit{Estadística} (12.ª ed.). Pearson Educación.
+    \item Walpole, R. E., Myers, R. H., Myers, S. L., \& Ye, K. (2012). \textit{Probabilidad y estadística para ingeniería y ciencias} (9.ª ed.). Pearson Educación.
+\end{itemize}
+
+\end{document}
