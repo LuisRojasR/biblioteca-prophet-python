@@ -1,0 +1,1018 @@
+\documentclass[12pt,letterpaper]{article}
+
+% -------------------------------------------------
+% PAQUETES
+% -------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-nodecimaldot]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{amsmath, amssymb}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+
+% -------------------------------------------------
+% CONFIGURACIÓN GENERAL TIPO APA
+% -------------------------------------------------
+\geometry{
+    top=2.54cm,
+    bottom=2.54cm,
+    left=2.54cm,
+    right=2.54cm
+}
+\setlength{\parindent}{1.27cm}
+\setlength{\parskip}{0pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% -------------------------------------------------
+% DOCUMENTO
+% -------------------------------------------------
+\begin{document}
+
+% -------------------------------------------------
+% PORTADA
+% -------------------------------------------------
+\begin{titlepage}
+    \thispagestyle{empty}
+    \setstretch{1}
+    \centering
+
+    \vspace*{0.5cm}
+    \includegraphics[width=0.35\textwidth]{Escudo UD.png} \par
+
+    \vspace{1cm}
+    {\scshape\Large Facultad de Ingeniería \par}
+    {\large Universidad Distrital Francisco José de Caldas \par}
+
+    \vspace{2cm}
+    {\huge\bfseries Informe de análisis estadístico \par}
+    \vspace{0.5cm}
+    {\Large Análisis estadístico descriptivo e inferencial de 60 datos con apoyo computacional en Python \par}
+
+    \vspace{2.5cm}
+    {\Large\itshape Autores: \par}
+    \vspace{0.5cm}
+    {\large Luis Fernando Rojas Rada -- 20222020242 \par}
+    {\large Alejandro Sánchez Escobar -- 20222020252 \par}
+
+    \vspace{2.1cm}
+    {\large Probabilidad y Estadística \par}
+
+    \vfill
+    {\large \today \par}
+\end{titlepage}
+
+\newpage
+\setstretch{2}
+
+% -------------------------------------------------
+% INTRODUCCIÓN
+% -------------------------------------------------
+\section{Introducción}
+
+La estadística descriptiva constituye una herramienta fundamental para organizar, resumir y analizar conjuntos de datos, ya que permite identificar patrones, tendencias y niveles de dispersión dentro de una muestra. Su aplicación resulta especialmente importante en contextos académicos, científicos y tecnológicos, donde se requiere transformar datos numéricos en información útil para su interpretación.
+
+En el presente informe se desarrolla un análisis estadístico descriptivo e inferencial
+a partir de una muestra de 60 datos enteros comprendidos entre 00 y 99, seleccionados
+manualmente por los desarrolladores de este informe, bajo las condiciones establecidas por el docente. El contexto seleccionado corresponde a los tiempos de respuesta, medidos en segundos, de 60 estudiantes al resolver un cuestionario corto de estadística en formato digital. Este tema fue elegido por ser coherente con el entorno académico y por permitir aplicar de manera clara las herramientas vistas en clase.
+
+Es importante destacar que, cumpliendo con los requerimientos de la asignatura, tanto para la construcción de las tablas de frecuencias como para las
+representaciones gráficas, se emplearon herramientas computacionales, específicamente el lenguaje de programación Python y sus bibliotecas especializadas en ciencia de datos (\texttt{numpy}, \texttt{pandas}, \texttt{matplotlib} y \texttt{seaborn}).
+
+A lo largo del informe se presentan, en primer lugar, la organización de los datos
+en la tabla de frecuencias; a continuación, las representaciones gráficas generadas
+computacionalmente; el desarrollo detallado de los cálculos de medidas de tendencia
+central, dispersión y posición; y finalmente, la aplicación de una prueba de hipótesis
+estadística sobre la media poblacional, junto con la interpretación integral de todos
+los resultados obtenidos.
+
+% -------------------------------------------------
+% OBJETIVOS
+% -------------------------------------------------
+\section{Objetivos}
+
+\subsection{Objetivo general}
+
+Analizar estadísticamente una muestra de 60 datos mediante tablas y
+representaciones gráficas construidas computacionalmente con Python, y mediante
+el desarrollo manual detallado de medidas descriptivas y una prueba de hipótesis
+estadística, con el propósito de interpretar el comportamiento de los datos y
+aplicar los conceptos desarrollados en el curso de Probabilidad y Estadística.
+
+\subsection{Objetivos específicos}
+
+\begin{itemize}[leftmargin=1.2cm]
+    \item Organizar los datos en tablas estadísticas adecuadas para su análisis apoyándose en bibliotecas de Python.
+    \item Calcular medidas de tendencia central como media, mediana y moda.
+    \item Hallar medidas de dispersión como rango, varianza, desviación estándar, coeficiente de variación y error estándar.
+    \item Determinar medidas de posición como cuartiles, deciles y percentiles.
+    \item Representar la información mediante histogramas, gráficos de barras, polígono de frecuencias, ojiva y diagrama de caja y bigotes haciendo uso de herramientas digitales.
+    \item Interpretar los resultados obtenidos de forma numérica y gráfica.
+    \item Aplicar una prueba de hipótesis bilateral sobre la media poblacional para
+      evaluar estadísticamente una afirmación sobre el tiempo promedio de respuesta
+      de los estudiantes.
+\end{itemize}
+
+% -------------------------------------------------
+% PLANTEAMIENTO DEL PROBLEMA
+% -------------------------------------------------
+ \section{Planteamiento del problema}
+
+En ambientes académicos mediados por herramientas digitales, el tiempo de respuesta de un estudiante frente a una actividad puede dar información relevante sobre su ritmo de trabajo, su comprensión del tema y su capacidad de interacción con el medio virtual. Por ello, resulta pertinente analizar una muestra de tiempos de respuesta para describir su comportamiento estadístico.
+
+En este trabajo se plantea el estudio de \textbf{60 tiempos de respuesta}, medidos en segundos, correspondientes a 60 estudiantes universitarios que resolvieron un cuestionario corto de estadística en una plataforma digital. Cada dato representa el número de segundos que tardó un estudiante particular en completar dicha prueba, con valores posibles entre 00 y 99 segundos. A partir de estos datos se busca responder la siguiente pregunta:
+\textit{¿cómo se distribuyen los tiempos de respuesta de los estudiantes,
+qué medidas estadísticas permiten describir e interpretar adecuadamente
+esta distribución, y existe evidencia estadística para afirmar que el
+tiempo promedio de respuesta difiere de un valor de referencia?}
+
+% -------------------------------------------------
+% MARCO TEÓRICO
+% -------------------------------------------------
+\section{Marco teórico}
+
+La estadística descriptiva es la rama de la estadística encargada de recolectar,
+organizar, presentar y resumir un conjunto de datos. Su objetivo es convertir una
+gran cantidad de observaciones numéricas en información comprensible, útil y ordenada.
+En este informe se emplean las principales herramientas de la estadística descriptiva:
+tablas de frecuencias, representaciones gráficas, medidas de tendencia central (media,
+mediana y moda), medidas de dispersión (rango, varianza, desviación estándar,
+coeficiente de variación y error estándar), medidas de posición (cuartiles, deciles
+y percentiles) y medidas de forma (asimetría y curtosis). Estas herramientas permiten
+describir tanto la localización de la muestra como su nivel de dispersión y la forma
+general de su distribución. Adicionalmente, se introduce la estadística inferencial
+mediante una prueba de hipótesis sobre la media poblacional, la cual permite extender
+las conclusiones más allá de la muestra y evaluar formalmente afirmaciones sobre los
+parámetros de la población de origen.
+
+% -------------------------------------------------
+% DATOS DE LA MUESTRA Y TIPO DE MUESTREO
+% -------------------------------------------------
+\section{Datos de la muestra y proceso de muestreo}
+
+\subsection{Proceso de recolección y muestreo}
+
+De acuerdo con los lineamientos establecidos para esta entrega, los 60 datos fueron
+seleccionados de forma manual por los autores, eligiendo valores enteros comprendidos
+entre 00 y 99 según las condiciones indicadas por el docente. Para la construcción de
+las tablas de frecuencias y las representaciones gráficas se emplearon herramientas
+computacionales, específicamente el lenguaje de programación Python y sus bibliotecas
+especializadas (\texttt{numpy}, \texttt{pandas}, \texttt{matplotlib} y
+\texttt{seaborn}), las cuales permitieron organizar, procesar y visualizar los datos
+de manera eficiente.
+
+Desde el punto de vista teórico, este método de selección equivale a un
+\textbf{muestreo no probabilístico de tipo intencional por criterio}, ya que los
+valores fueron definidos directamente por los autores bajo la restricción de estar
+dentro del intervalo $[00,\, 99]$, buscando una distribución razonablemente variada
+que permitiera aplicar todas las herramientas estadísticas del curso.
+
+\subsection{Contextualización de los datos}
+
+Para dotar a la muestra de un significado práctico y coherente que permitiera un
+análisis lógico, se definió de manera autónoma el siguiente contexto: los 60 valores
+representan los \textit{tiempos de respuesta, medidos en segundos}, que tardaron 60
+estudiantes universitarios en completar un cuestionario corto de estadística en una
+plataforma digital.
+
+Los 60 datos (en segundos) son los siguientes:
+
+\begin{align*}
+&12, 18, 21, 22, 24, 25, 27, 27, 29, 30, 31, 33, 34, 35, 36, 38, 39, 40, 41, 41, \\
+&42, 43, 44, 45, 46, 47, 47, 48, 49, 50, 50, 51, 52, 53, 54, 54, 55, 56, 57, 58, \\
+&59, 60, 60, 61, 62, 63, 64, 65, 66, 68, 70, 72, 74, 76, 78, 80, 82, 85, 88, 92
+\end{align*}
+
+Al ordenar la información, se identifica que el valor mínimo es 12 segundos y el
+valor máximo es 92 segundos, lo cual confirma que todos los datos cumplen con la
+restricción inicial de estar entre 00 y 99.
+
+% -------------------------------------------------
+% TABLA DE FRECUENCIAS
+% -------------------------------------------------
+\section{Tabla de frecuencias}
+
+Con el fin de resumir y organizar la información, los datos se agruparon en intervalos de amplitud 10 (proceso estructurado computacionalmente con la ayuda de \texttt{pandas}). Para cada intervalo se calculó la frecuencia absoluta ($f_i$), la frecuencia acumulada ($F_i$), la frecuencia relativa ($h_i$) y la frecuencia relativa acumulada ($H_i$), tal como se presenta en la Tabla~\ref{tab:frecuencias}.
+
+\begin{table}[H]
+\centering
+\caption{Tabla de frecuencias agrupadas de los 60 tiempos de respuesta simulados}
+\label{tab:frecuencias}
+\begin{tabular}{cccccc}
+\toprule
+Intervalo (s) & Marca de clase & $f_i$ & $F_i$ & $h_i$ & $H_i$ \\
+\midrule
+10--19 & 14.5 & 2  & 2  & 0.0333 & 0.0333 \\
+20--29 & 24.5 & 7  & 9  & 0.1167 & 0.1500 \\
+30--39 & 34.5 & 8  & 17 & 0.1333 & 0.2833 \\
+40--49 & 44.5 & 12 & 29 & 0.2000 & 0.4833 \\
+50--59 & 54.5 & 12 & 41 & 0.2000 & 0.6833 \\
+60--69 & 64.5 & 9  & 50 & 0.1500 & 0.8333 \\
+70--79 & 74.5 & 5  & 55 & 0.0833 & 0.9167 \\
+80--89 & 84.5 & 4  & 59 & 0.0667 & 0.9833 \\
+90--99 & 94.5 & 1  & 60 & 0.0167 & 1.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La Tabla~\ref{tab:frecuencias} permite observar que los intervalos con mayor frecuencia son 40--49 y 50--59, cada uno con 12 observaciones ($f_i = 12$), lo que representa el 20\% del total de estudiantes en cada uno. Esto indica que la mayor concentración de tiempos de respuesta se ubica entre los 40 y los 59 segundos.
+
+% -------------------------------------------------
+% REPRESENTACIONES GRÁFICAS
+% -------------------------------------------------
+\section{Representaciones gráficas}
+
+A continuación se presentan las representaciones gráficas estadísticas construidas computacionalmente con Python (\texttt{matplotlib} y \texttt{seaborn}) a partir de los datos de la Tabla~\ref{tab:frecuencias}. Las Figuras~\ref{fig:histograma} a \ref{fig:ojivarelativa} se derivan directamente de la distribución de frecuencias. La Figura~\ref{fig:caja} (diagrama de caja y bigotes) resume los cuartiles y el Rango Intercuartílico (RIC) de la muestra; los valores específicos de cada uno se calculan y explican paso a paso en la Sección~\ref{sec:posicion}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{histograma.png}
+    \caption{Histograma de frecuencias de los tiempos de respuesta de 60 estudiantes}
+    \label{fig:histograma}
+\end{figure}
+
+La Figura~\ref{fig:histograma} muestra la distribución de los 60 tiempos de respuesta mediante barras continuas por intervalo. Se observa que la mayor concentración de estudiantes se ubica entre los 40 y los 59 segundos, donde se agrupan 24 de los 60 estudiantes (el 40\% de la muestra). Los intervalos extremos, como 10--19 y 90--99, presentan muy pocos datos (2 y 1 observación respectivamente), lo que indica que muy pocos estudiantes respondieron en tiempos muy cortos o muy largos. La forma general del histograma sugiere una distribución aproximadamente simétrica con una leve cola hacia la derecha.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{barras_frecuencia.png}
+    \caption{Gráfico de barras de frecuencias absolutas por intervalo de tiempo}
+    \label{fig:barras}
+\end{figure}
+
+La Figura~\ref{fig:barras} permite comparar directamente la frecuencia absoluta ($f_i$) de cada intervalo. Se confirma que los intervalos [40--49] y [50--59] son los más representativos con 12 estudiantes cada uno, mientras que el intervalo [90--99] tiene la menor frecuencia con solo 1 estudiante. Esta comparación visual facilita identificar dónde se concentra la mayor parte de la muestra dentro del contexto de los tiempos de respuesta al cuestionario.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{poligono_frecuencia.png}
+    \caption{Polígono de frecuencias de los tiempos de respuesta}
+    \label{fig:poligono}
+\end{figure}
+
+El polígono de frecuencias (Figura~\ref{fig:poligono}) conecta las marcas de clase de cada intervalo con su frecuencia correspondiente, mostrando la tendencia general de la distribución. Se observa un ascenso progresivo desde el intervalo 10--19 hasta alcanzar el pico en los intervalos centrales (40--49 y 50--59), seguido de un descenso gradual hacia los valores más altos. Este comportamiento confirma que los tiempos de respuesta típicos de los estudiantes se encuentran en la zona central de la distribución.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{ojiva.png}
+    \caption{Ojiva de frecuencias absolutas acumuladas}
+    \label{fig:ojiva}
+\end{figure}
+
+La ojiva de frecuencias absolutas acumuladas (Figura~\ref{fig:ojiva}) muestra cómo se acumulan las observaciones a medida que avanzan los intervalos. Al llegar al intervalo 50--59, la frecuencia acumulada es $F_i = 41$, lo que indica que el 68.33\% de los estudiantes tardó 59 segundos o menos en responder. Esta curva es especialmente útil para determinar visualmente medidas de posición como la mediana y los cuartiles.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.82\textwidth]{ojiva_relativa.png}
+    \caption{Ojiva de frecuencias relativas acumuladas}
+    \label{fig:ojivarelativa}
+\end{figure}
+
+La ojiva relativa (Figura~\ref{fig:ojivarelativa}) expresa la acumulación en términos proporcionales (entre 0 y 1). Se observa que la curva cruza el valor de 0.50 dentro del intervalo [50--59], lo que es consistente con la mediana de 50 segundos calculada en la Sección~\ref{sec:desarrollo}. Este gráfico es especialmente útil para comparar la distribución de la muestra con otras distribuciones teóricas o de referencia.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.60\textwidth]{caja_bigotes.png}
+    \caption{Diagrama de caja y bigotes de los tiempos de respuesta de 60 estudiantes}
+    \label{fig:caja}
+\end{figure}
+
+El diagrama de caja y bigotes (Figura~\ref{fig:caja}) resume visualmente los cinco números clave de la distribución: el valor mínimo ($x_{\min} = 12$ s), el primer cuartil ($Q_1 = 36.50$ s), la mediana ($Q_2 = 50$ s), el tercer cuartil ($Q_3 = 62.75$ s) y el valor máximo ($x_{\max} = 92$ s). La caja central representa el Rango Intercuartílico (RIC, conocido en inglés como \textit{Interquartile Range} o IQR $= 26.25$ s), que contiene el 50\% central de los estudiantes, es decir, aquellos cuyos tiempos de respuesta se ubican entre 36.50 s y 62.75 s. Los bigotes se extienden desde el valor mínimo hasta el valor máximo sin mostrar valores atípicos extremos. La leve asimetría positiva de la caja confirma la cola derecha ya visible en el histograma (Figura~\ref{fig:histograma}). El cálculo paso a paso de $Q_1$, $Q_2$, $Q_3$ y el RIC se desarrolla en la Sección~\ref{sec:posicion}.
+
+% -------------------------------------------------
+% DESARROLLO MANUAL
+% -------------------------------------------------
+\section{Desarrollo manual de las medidas estadísticas}
+\label{sec:desarrollo}
+
+En esta sección se presentan los procedimientos de cálculo de las principales medidas estadísticas descriptivas aplicadas a los 60 tiempos de respuesta simulados. Para cada medida se define la fórmula con sus variables identificadas y los valores correspondientes al conjunto de datos analizado, se desarrolla el procedimiento paso a paso y se interpreta el resultado en el contexto del problema.
+
+\subsection{Media aritmética}
+
+La media aritmética se calcula mediante la expresión:
+
+\[
+\bar{x}=\frac{\sum x_i}{n}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $\bar{x}$: media aritmética, es decir, el promedio de los tiempos de respuesta de los 60 estudiantes (en segundos).
+    \item $\sum x_i$: suma de todos los datos de la muestra.
+    \item $n$: número total de datos ($n = 60$ estudiantes).
+\end{itemize}
+
+En este caso, se realiza la suma completa de los 60 datos:
+
+\begin{align*}
+\sum x_i = &12+18+21+22+24+25+27+27+29+30 \\
+&+31+33+34+35+36+38+39+40+41+41 \\
+&+42+43+44+45+46+47+47+48+49+50 \\
+&+50+51+52+53+54+54+55+56+57+58 \\
+&+59+60+60+61+62+63+64+65+66+68 \\
+&+70+72+74+76+78+80+82+85+88+92
+\end{align*}
+
+\[
+\sum x_i = 3029
+\]
+
+Como el tamaño de la muestra es $n=60$, se obtiene:
+
+\[
+\bar{x}=\frac{3029}{60}=50.4833 \approx 50.48 \text{ s}
+\]
+
+\textbf{Interpretación:} el promedio de tiempo que tardaron los 60 estudiantes en responder el cuestionario fue de \textbf{50.48 segundos}. Esto significa que, en promedio, un estudiante empleó aproximadamente 50 segundos para completar la prueba.
+
+\subsection{Mediana}
+
+Para hallar la mediana, primero se ordenan los datos de menor a mayor. Como la cantidad de datos es par ($n=60$), la mediana corresponde al promedio entre los valores ubicados en las posiciones $\frac{n}{2} = 30$ y $\frac{n}{2}+1 = 31$:
+
+\[
+\frac{n}{2}=30, \qquad \frac{n}{2}+1=31
+\]
+
+En la muestra ordenada:
+
+\[
+x_{30}=50 \text{ s},\qquad x_{31}=50 \text{ s}
+\]
+
+Por tanto:
+
+\[
+Md=\frac{x_{30}+x_{31}}{2}=\frac{50+50}{2}=50 \text{ s}
+\]
+
+\textbf{Interpretación:} la mediana indica que el 50\% de los estudiantes respondió el cuestionario en \textbf{50 segundos o menos}, y el otro 50\% tardó 50 segundos o más. El punto central exacto de la distribución es 50 segundos.
+
+\subsection{Moda}
+
+Al revisar la muestra se observa que los números 27, 41, 47, 50, 54 y 60 aparecen dos veces, mientras que el resto de los datos aparece una sola vez.
+
+Por consiguiente, la distribución es \textbf{multimodal} y sus modas son:
+
+\[
+Mo=\{27,\ 41,\ 47,\ 50,\ 54,\ 60\} \text{ s}
+\]
+
+\textbf{Interpretación:} estos seis valores son los tiempos de respuesta que más se repitieron en la muestra. Al ser multimodal, no existe un único tiempo dominante, sino que varios estudiantes coincidieron en responder en esos tiempos específicos.
+
+\subsection{Rango}
+
+El rango se obtiene como la diferencia entre el valor máximo y el valor mínimo de la muestra:
+
+\[
+R=x_{\max}-x_{\min}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $R$: rango de la distribución, es decir, la amplitud total del conjunto de datos (en segundos).
+    \item $x_{\max}$: tiempo de respuesta máximo observado en la muestra. En este caso, $x_{\max} = 92$ s, que corresponde al estudiante que más tardó en responder.
+    \item $x_{\min}$: tiempo de respuesta mínimo observado en la muestra. En este caso, $x_{\min} = 12$ s, que corresponde al estudiante que respondió más rápido.
+\end{itemize}
+
+Sustituyendo los valores:
+
+\[
+R=92-12=80 \text{ s}
+\]
+
+\textbf{Interpretación:} existe una diferencia de \textbf{80 segundos} entre el estudiante que respondió más rápido (12 s) y el que tardó más tiempo (92 s). Esto refleja una variabilidad considerable en los tiempos de respuesta extremos de la muestra.
+
+\subsection{Valor mínimo y valor máximo}
+
+El \textbf{valor mínimo} ($x_{\min}$) es la observación más pequeña del conjunto de datos, y el \textbf{valor máximo} ($x_{\max}$) es la observación más grande. Ambos se identifican directamente a partir de la muestra ordenada de menor a mayor:
+
+\[
+x_{\min} = \min\{x_1, x_2, \ldots, x_n\} = 12 \text{ s}
+\]
+
+\[
+x_{\max} = \max\{x_1, x_2, \ldots, x_n\} = 92 \text{ s}
+\]
+
+Estos dos valores delimitan el soporte empírico de la distribución y sirven de base para el cálculo del rango. Se verifica que ambos se encuentran dentro del intervalo permitido de $[00,\, 99]$.
+
+\subsection{Varianza muestral}
+
+La varianza muestral se calculó con la fórmula abreviada:
+
+\[
+s^2=\frac{\sum x_i^2-\frac{(\sum x_i)^2}{n}}{n-1}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $s^2$: varianza muestral, medida de dispersión cuadrática respecto a la media (en s$^2$).
+    \item $\sum x_i^2$: suma de los cuadrados de cada uno de los 60 datos.
+    \item $\sum x_i$: suma de todos los datos ($\sum x_i = 3029$ s).
+    \item $n$: tamaño de la muestra ($n = 60$).
+    \item $n-1 = 59$: grados de libertad muestrales (corrección de Bessel para muestras).
+\end{itemize}
+
+Para aplicar la fórmula, primero se calcula la suma de los cuadrados de todos los datos:
+
+\begin{align*}
+\sum x_i^2 = &12^2+18^2+21^2+22^2+24^2+25^2+27^2+27^2+29^2+30^2 \\
+&+31^2+33^2+34^2+35^2+36^2+38^2+39^2+40^2+41^2+41^2 \\
+&+42^2+43^2+44^2+45^2+46^2+47^2+47^2+48^2+49^2+50^2 \\
+&+50^2+51^2+52^2+53^2+54^2+54^2+55^2+56^2+57^2+58^2 \\
+&+59^2+60^2+60^2+61^2+62^2+63^2+64^2+65^2+66^2+68^2 \\
+&+70^2+72^2+74^2+76^2+78^2+80^2+82^2+85^2+88^2+92^2
+\end{align*}
+
+\[
+\sum x_i^2 = 173473
+\]
+
+Ahora se reemplaza en la fórmula:
+
+\[
+s^2=\frac{173473-\frac{(3029)^2}{60}}{59}=\frac{173473-\frac{9{,}174{,}841}{60}}{59}
+\]
+
+\[
+s^2=\frac{173473-152914.0167}{59}=\frac{20558.9833}{59}=348.4573 \approx 348.46 \text{ s}^2
+\]
+
+\textbf{Interpretación:} la varianza de 348.46 s$^2$ cuantifica la dispersión cuadrática promedio de los tiempos de respuesta respecto a la media. Al estar expresada en unidades cuadradas, su interpretación directa es limitada; sin embargo, su magnitud confirma una dispersión moderada en el conjunto de datos.
+
+\subsection{Desviación estándar}
+
+La desviación estándar se obtiene calculando la raíz cuadrada de la varianza:
+
+\[
+s=\sqrt{s^2}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $s$: desviación estándar muestral, medida de dispersión expresada en las mismas unidades que los datos (en segundos).
+    \item $s^2$: varianza muestral ($s^2 = 348.4573$ s$^2$).
+\end{itemize}
+
+\[
+s=\sqrt{348.4573}=18.6670 \approx 18.67 \text{ s}
+\]
+
+\textbf{Interpretación:} en promedio, los tiempos de respuesta de los estudiantes se alejan \textbf{18.67 segundos} por encima o por debajo de la media (50.48 s). Dicho de otra forma, un estudiante típico respondió en algún tiempo entre aproximadamente 32 s y 69 s.
+
+\subsection{Coeficiente de variación}
+
+El coeficiente de variación (CV) se calcula con la fórmula:
+
+\[
+CV=\frac{s}{\bar{x}}\times 100
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $CV$: coeficiente de variación, expresa la dispersión relativa de los datos como porcentaje de la media. Permite comparar la variabilidad de conjuntos de datos con distintas unidades o escalas.
+    \item $s$: desviación estándar muestral ($s = 18.67$ s).
+    \item $\bar{x}$: media aritmética ($\bar{x} = 50.48$ s).
+\end{itemize}
+
+Sustituyendo los valores obtenidos:
+
+\[
+CV=\frac{18.67}{50.48}\times 100=36.98\%
+\]
+
+\textbf{Interpretación:} el CV de 36.98\% indica que la desviación estándar representa el 36.98\% de la media. Según los criterios convencionales (CV $< 30\%$: muestra homogénea; CV entre 30\% y 50\%: muestra moderadamente heterogénea), la dispersión relativa de la muestra es \textbf{moderada}, lo que significa que los tiempos de respuesta presentan una variabilidad media entre los estudiantes.
+
+\subsection{Error estándar}
+
+El error estándar (ES) se calcula como:
+
+\[
+ES=\frac{s}{\sqrt{n}}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $ES$: error estándar de la media, estima cuánto podría alejarse la media muestral de la media real de la población si se repitiese el muestreo (en segundos).
+    \item $s$: desviación estándar muestral ($s = 18.67$ s).
+    \item $n$: tamaño de la muestra ($n = 60$), por lo tanto $\sqrt{n} = \sqrt{60} = 7.746$.
+\end{itemize}
+
+\[
+ES=\frac{18.67}{\sqrt{60}}=\frac{18.67}{7.746}=2.41 \text{ s}
+\]
+
+\textbf{Interpretación:} el error estándar de 2.41 s indica que, si se tomaran múltiples muestras del mismo tamaño, la media muestral (50.48 s) variaría en promedio $\pm$2.41 s respecto a la media real de la población. Un valor relativamente pequeño en comparación con la media confirma que la estimación es razonablemente precisa.
+
+\subsection{Curtosis}
+
+La curtosis es una medida de forma que indica el grado de apuntamiento o achatamiento de la distribución en relación con la distribución normal. Se emplea el \textbf{coeficiente de curtosis muestral de Fisher} (también llamado exceso de curtosis), cuya fórmula es:
+
+\[
+g_2 = \frac{n(n+1)}{(n-1)(n-2)(n-3)}\cdot\frac{\displaystyle\sum_{i=1}^{n}(x_i-\bar{x})^4}{s^4}
+     \ -\ \frac{3(n-1)^2}{(n-2)(n-3)}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $g_2$: coeficiente de curtosis de Fisher. Si $g_2 > 0$: distribución leptocúrtica (más apuntada que la normal); si $g_2 < 0$: platicúrtica (más achatada); si $g_2 = 0$: mesocúrtica (igual que la normal).
+    \item $n$: tamaño de la muestra ($n = 60$).
+    \item $\bar{x}$: media aritmética ($\bar{x} = 50.48$ s).
+    \item $s$: desviación estándar ($s = 18.67$ s).
+    \item $\sum_{i=1}^{n}(x_i-\bar{x})^4$: suma de las cuartas potencias de la diferencia entre cada dato y la media.
+    \item $s^4$: cuarta potencia de la desviación estándar.
+\end{itemize}
+
+\textbf{Paso 1.} Suma de las cuartas potencias de las desviaciones respecto a la media:
+
+\[
+\sum_{i=1}^{60}(x_i-\bar{x})^4 = 17{,}218{,}098.40
+\]
+
+\textbf{Paso 2.} Cuarta potencia de la desviación estándar:
+
+\[
+s^4 = (18.67)^4 = 121{,}614.11
+\]
+
+\textbf{Paso 3.} Factor de corrección muestral:
+
+\[
+\frac{n(n+1)}{(n-1)(n-2)(n-3)}
+= \frac{60 \times 61}{59 \times 58 \times 57}
+= \frac{3{,}660}{195{,}006}
+= 0.018769
+\]
+
+\textbf{Paso 4.} Primer término de la fórmula:
+
+\[
+0.018769 \times \frac{17{,}218{,}098.40}{121{,}614.11}
+= 0.018769 \times 141.58
+= 2.657
+\]
+
+\textbf{Paso 5.} Término de corrección:
+
+\[
+\frac{3(n-1)^2}{(n-2)(n-3)}
+= \frac{3 \times 59^2}{58 \times 57}
+= \frac{10{,}443}{3{,}306}
+= 3.159
+\]
+
+\textbf{Paso 6.} Coeficiente de curtosis:
+
+\[
+\boxed{g_2 = 2.657 - 3.159 = -0.50}
+\]
+
+\textbf{Interpretación:} como $g_2 = -0.50 < 0$, la distribución es \textbf{platicúrtica}. Esto significa que la curva de los tiempos de respuesta es más achatada que la distribución normal, con menor concentración de datos alrededor de la media y colas relativamente más cortas y uniformes. En términos prácticos, los tiempos de respuesta de los estudiantes se dispersan de manera más uniforme a lo largo del rango, sin una concentración muy marcada en la zona central, lo que puede verse visualmente en la Figura~\ref{fig:histograma}.
+
+% -------------------------------------------------
+% MEDIDAS DE POSICIÓN
+% -------------------------------------------------
+\section{Medidas de posición}
+\label{sec:posicion}
+
+\subsection{Cuartiles}
+
+Los cuartiles son valores que dividen la distribución ordenada en cuatro partes iguales, cada una con el 25\% de los datos. Su posición se calcula mediante:
+
+\[
+L_{Q_k}=\frac{k(n+1)}{4}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $L_{Q_k}$: posición (lugar) del $k$-ésimo cuartil en el arreglo de datos ordenado de menor a mayor.
+    \item $k$: número del cuartil a calcular ($k = 1$ para el primer cuartil, $k = 2$ para el segundo y $k = 3$ para el tercero).
+    \item $n$: tamaño de la muestra ($n = 60$).
+\end{itemize}
+
+\textbf{Primer cuartil ($Q_1$):}
+
+\[
+L_{Q_1}=\frac{1(60+1)}{4}=15.25
+\]
+
+El cuartil se encuentra entre las posiciones 15 y 16 del arreglo ordenado:
+
+\[
+x_{15}=36 \text{ s},\qquad x_{16}=38 \text{ s}
+\]
+
+Interpolando (la fracción decimal es 0.25, que indica cuánto avanzar entre los dos valores):
+
+\[
+Q_1=36+0.25(38-36)=36+0.50=36.50 \text{ s}
+\]
+
+\textbf{Segundo cuartil ($Q_2$):}
+
+\[
+L_{Q_2}=\frac{2(60+1)}{4}=30.5
+\]
+
+Se ubica entre los valores en las posiciones 30 y 31:
+
+\[
+x_{30}=50 \text{ s},\qquad x_{31}=50 \text{ s}
+\]
+
+\[
+Q_2=50 \text{ s}
+\]
+
+\textbf{Tercer cuartil ($Q_3$):}
+
+\[
+L_{Q_3}=\frac{3(60+1)}{4}=45.75
+\]
+
+Se encuentra entre las posiciones 45 y 46:
+
+\[
+x_{45}=62 \text{ s},\qquad x_{46}=63 \text{ s}
+\]
+
+Interpolando (fracción decimal = 0.75):
+
+\[
+Q_3=62+0.75(63-62)=62+0.75=62.75 \text{ s}
+\]
+
+\textbf{Interpretación:} $Q_1 = 36.50$ s significa que el 25\% de los estudiantes respondió en 36.50 s o menos. $Q_2 = 50$ s confirma que la mitad de los estudiantes tardó exactamente 50 s o menos (coincide con la mediana). $Q_3 = 62.75$ s indica que el 75\% de los estudiantes completó el cuestionario en 62.75 s o menos, y solo el 25\% restante tardó más de ese tiempo. Estos tres valores determinan las divisiones internas visibles en el diagrama de caja y bigotes de la Figura~\ref{fig:caja}.
+
+\subsection{Rango Intercuartílico}
+
+El \textbf{Rango Intercuartílico (RIC)} representa la amplitud del intervalo que contiene el 50\% central de los datos. Se calcula como la diferencia entre el tercer y el primer cuartil:
+
+\[
+RIC = Q_3 - Q_1
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $RIC$: Rango Intercuartílico, amplitud del intervalo central que agrupa al 50\% de los datos (en segundos).
+    \item $Q_3$: tercer cuartil, ya calculado: $Q_3 = 62.75$ s.
+    \item $Q_1$: primer cuartil, ya calculado: $Q_1 = 36.50$ s.
+\end{itemize}
+
+\[
+RIC = 62.75 - 36.50 = 26.25 \text{ s}
+\]
+
+\textbf{Interpretación:} el 50\% central de los estudiantes respondió el cuestionario en un rango de \textbf{26.25 segundos}, es decir, entre 36.50 s y 62.75 s. Este valor también determina la amplitud de la caja en el diagrama de la Figura~\ref{fig:caja}.
+
+\subsection{Deciles}
+
+Los deciles son valores que dividen la distribución ordenada en diez partes iguales, cada una con el 10\% de los datos. Su posición se obtiene con:
+
+\[
+L_{D_k}=\frac{k(n+1)}{10}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $L_{D_k}$: posición del $k$-ésimo decil en el arreglo de datos ordenado.
+    \item $k$: número del decil a calcular ($k = 1, 2, \ldots, 9$).
+    \item $n$: tamaño de la muestra ($n = 60$).
+\end{itemize}
+
+\textbf{Primer decil ($D_1$):}
+
+\[
+L_{D_1}=\frac{1(61)}{10}=6.1
+\]
+
+Se ubica entre los datos en las posiciones 6 y 7:
+
+\[
+x_6=25 \text{ s},\qquad x_7=27 \text{ s}
+\]
+
+Interpolando (fracción decimal = 0.1):
+
+\[
+D_1=25+0.1(27-25)=25+0.2=25.2 \text{ s}
+\]
+
+\textbf{Quinto decil ($D_5$):}
+
+\[
+L_{D_5}=\frac{5(61)}{10}=30.5
+\]
+
+\[
+D_5=50 \text{ s}
+\]
+
+\textbf{Noveno decil ($D_9$):}
+
+\[
+L_{D_9}=\frac{9(61)}{10}=54.9
+\]
+
+Se ubica entre las posiciones 54 y 55:
+
+\[
+x_{54}=76 \text{ s},\qquad x_{55}=78 \text{ s}
+\]
+
+Interpolando (fracción decimal = 0.9):
+
+\[
+D_9=76+0.9(78-76)=76+1.8=77.8 \text{ s}
+\]
+
+\textbf{Interpretación:} $D_1 = 25.2$ s indica que el 10\% de los estudiantes respondió en 25.2 s o menos. $D_5 = 50$ s coincide con la mediana, confirmando que el 50\% respondió en 50 s o menos. $D_9 = 77.8$ s muestra que el 90\% de los estudiantes tardó a lo sumo 77.8 segundos, y solo el 10\% restante superó ese tiempo.
+
+\subsection{Percentiles}
+
+Los percentiles son valores que dividen la distribución ordenada en cien partes iguales, cada una con el 1\% de los datos. La posición del $k$-ésimo percentil se calcula mediante:
+
+\[
+L_{P_k}=\frac{k(n+1)}{100}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $L_{P_k}$: posición del $k$-ésimo percentil en el arreglo de datos ordenado.
+    \item $k$: número del percentil a calcular ($k = 1, 2, \ldots, 99$).
+    \item $n$: tamaño de la muestra ($n = 60$).
+\end{itemize}
+
+Los percentiles más representativos de esta distribución son:
+
+\[
+P_{25}=36.50 \text{ s},\qquad P_{50}=50 \text{ s},\qquad P_{75}=62.75 \text{ s}
+\]
+
+Estos valores coinciden con los cuartiles $Q_1$, $Q_2$ y $Q_3$, respectivamente, ya que $P_{25} = Q_1$, $P_{50} = Q_2$ y $P_{75} = Q_3$.
+
+\textbf{Interpretación:} $P_{25} = 36.50$ s significa que el 25\% de los estudiantes tardó 36.50 s o menos. $P_{50} = 50$ s divide la muestra exactamente a la mitad. $P_{75} = 62.75$ s indica que el 75\% de los estudiantes respondió en 62.75 s o menos, y solo el 25\% restante tardó más de ese tiempo.
+
+% -------------------------------------------------
+% FORMA DE LA DISTRIBUCIÓN
+% -------------------------------------------------
+\section{Forma de la distribución}
+
+La distribución presenta una ligera asimetría positiva, ya que los valores altos se extienden un poco más hacia la derecha. Esto se relaciona con la presencia de observaciones como 80, 82, 85, 88 y 92 segundos, que amplían la cola superior de la muestra y se pueden apreciar claramente en la Figura~\ref{fig:histograma} y la Figura~\ref{fig:caja}.
+
+Asimismo, la curtosis obtenida ($g_2 = -0.50$) indica que la distribución no es excesivamente apuntada, sino más bien moderada en su forma general (platicúrtica). En conjunto, estos resultados son coherentes con una muestra centrada alrededor de 50 segundos y con dispersión media, tal como se observa en el polígono de frecuencias de la Figura~\ref{fig:poligono}.
+
+% -------------------------------------------------
+% INTERPRETACIÓN GENERAL
+% -------------------------------------------------
+\section{Interpretación general de los resultados}
+
+Los resultados obtenidos permiten concluir que la muestra presenta una clara concentración alrededor de 50 segundos, valor que coincide aproximadamente con la media (50.48 s) y exactamente con la mediana (50 s). Esto indica que el tiempo típico de respuesta de los estudiantes frente al cuestionario de estadística se ubica en la zona central de la distribución, como lo confirma visualmente el histograma de la Figura~\ref{fig:histograma}.
+
+La dispersión de la muestra puede considerarse moderada, ya que la desviación estándar fue de 18.67 s y el coeficiente de variación (CV) de 36.98\%. Además, el Rango Intercuartílico (RIC) de 26.25 s evidencia que el 50\% central de los datos (entre $Q_1 = 36.50$ s y $Q_3 = 62.75$ s) se mantiene relativamente concentrado, como lo ilustra el diagrama de caja de la Figura~\ref{fig:caja}.
+
+Desde el punto de vista gráfico, el histograma (Figura~\ref{fig:histograma}), el gráfico de barras (Figura~\ref{fig:barras}) y el polígono de frecuencias (Figura~\ref{fig:poligono}) muestran una distribución con mayor densidad en los intervalos 40--49 y 50--59, con 12 observaciones cada uno según la Tabla~\ref{tab:frecuencias}. Por su parte, la ojiva (Figura~\ref{fig:ojiva}) confirma el comportamiento acumulado de los datos, mientras que el diagrama de caja (Figura~\ref{fig:caja}) refuerza la interpretación de una distribución centrada y con ligera asimetría positiva.
+
+Estos resultados descriptivos constituyen la base cuantitativa para la prueba de
+hipótesis desarrollada en la Sección~\ref{sec:hipotesis}, en la cual se evalúa
+formalmente si el tiempo promedio de respuesta de los estudiantes difiere
+significativamente de 50 segundos con un nivel de confianza del 95\,\%.
+
+% -------------------------------------------------
+% HIPÓTESIS ESTADÍSTICA
+% -------------------------------------------------
+\section{Hipótesis estadística}
+\label{sec:hipotesis}
+
+\subsection{Definición}
+
+Una hipótesis estadística es una afirmación sobre uno o más parámetros de una población
+que se verifica mediante datos muestrales. En toda prueba se plantean dos hipótesis
+mutuamente excluyentes: la \textbf{hipótesis nula} ($H_0$), que representa la condición
+de igualdad o no efecto (siempre incluye $=$, $\leq$ o $\geq$), y la \textbf{hipótesis
+alternativa} ($H_1$), que se acepta cuando los datos aportan evidencia suficiente para
+rechazar $H_0$.
+
+Según la dirección del efecto esperado, la prueba puede ser \textbf{bilateral}
+($H_1$: $\mu \neq \mu_0$), \textbf{unilateral izquierda} ($H_1$: $\mu < \mu_0$) o
+\textbf{unilateral derecha} ($H_1$: $\mu > \mu_0$). Al tomar una decisión siempre
+existe riesgo de error: el \textbf{Error Tipo~I} ($\alpha$) ocurre al rechazar $H_0$
+siendo verdadera, y el \textbf{Error Tipo~II} ($\beta$) ocurre al no rechazarla siendo
+falsa. La \textbf{potencia} de la prueba es $1 - \beta$, y el \textbf{valor-$p$} es
+la probabilidad de obtener un resultado tan extremo o más extremo bajo $H_0$.
+
+\subsection{Aplicación al conjunto de datos}
+
+Con base en los datos de tiempos de respuesta analizados en este informe, se plantea
+la siguiente prueba de hipótesis: \textit{¿existe evidencia estadística para afirmar
+que el tiempo promedio de respuesta de los estudiantes es diferente de 50 segundos?}
+
+\textbf{Paso 1. Planteamiento de hipótesis:}
+
+\[
+H_0\text{: } \mu = 50 \text{ s} \qquad H_1\text{: } \mu \neq 50 \text{ s}
+\]
+
+Se trata de una \textbf{prueba bilateral} con nivel de significancia $\alpha = 0.05$.
+
+\textbf{Paso 2. Identificación de variables:}
+
+\begin{itemize}[leftmargin=1.2cm]
+    \item $\bar{x}$: media muestral obtenida en la Sección~\ref{sec:desarrollo}
+          ($\bar{x} = 50.48$ s).
+    \item $\mu_0$: valor poblacional de referencia planteado en $H_0$
+          ($\mu_0 = 50$ s).
+    \item $s$: desviación estándar muestral calculada en la Sección~\ref{sec:desarrollo}
+          ($s = 18.67$ s).
+    \item $n$: tamaño de la muestra ($n = 60$), por lo tanto
+          $\sqrt{n} = \sqrt{60} = 7.746$.
+    \item $ES$: error estándar de la media, ya calculado en la
+          Sección~\ref{sec:desarrollo} ($ES = 2.41$ s).
+    \item $\alpha$: nivel de significancia ($\alpha = 0.05$).
+    \item $Z_{\alpha/2}$: valor crítico para prueba bilateral con $\alpha = 0.05$
+          ($Z_{0.025} = \pm 1.96$).
+\end{itemize}
+
+\textbf{Paso 3. Selección del estadístico de prueba:}
+
+Dado que $n = 60 > 30$ y se dispone de la desviación estándar muestral $s$, se emplea
+el estadístico $Z$:
+
+\[
+Z = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}
+\]
+
+donde:
+\begin{itemize}[leftmargin=1.2cm]
+    \item $Z$: estadístico de prueba estandarizado. Indica cuántas desviaciones estándar
+          se aleja la media muestral $\bar{x}$ del valor de referencia $\mu_0$.
+    \item $\bar{x} - \mu_0$: diferencia entre la media muestral observada y el valor
+          hipotético planteado en $H_0$.
+    \item $s / \sqrt{n}$: error estándar de la media, que cuantifica la variabilidad
+          esperada de $\bar{x}$ entre muestras del mismo tamaño.
+\end{itemize}
+
+\textbf{Paso 4. Cálculo del estadístico:}
+
+Se reemplazan los valores obtenidos en el análisis descriptivo:
+
+\[
+Z = \frac{50.48 - 50}{18.67 / \sqrt{60}}
+  = \frac{0.48}{18.67 / 7.746}
+  = \frac{0.48}{2.41}
+  = 0.199
+\]
+
+\textbf{Paso 5. Determinación de la región crítica:}
+
+Para una prueba bilateral con $\alpha = 0.05$, los valores críticos son
+$Z_{\alpha/2} = \pm 1.96$. La región de rechazo queda definida como:
+
+\[
+\text{Rechazar } H_0 \text{ si } |Z| > 1.96
+\]
+
+La región de no rechazo corresponde al intervalo $-1.96 < Z < 1.96$, que representa
+el 95\,\% central de la distribución normal estándar.
+
+\textbf{Paso 6. Cálculo del valor-$p$:}
+
+El valor-$p$ para una prueba bilateral se obtiene como:
+
+\[
+\text{valor-}p = 2 \cdot P(Z > |Z_{\text{calc}}|) = 2 \cdot P(Z > 0.199)
+\]
+
+Consultando la tabla de la distribución normal estándar:
+
+\[
+P(Z > 0.199) \approx 1 - 0.5789 = 0.4211
+\]
+
+\[
+\text{valor-}p = 2 \times 0.4211 = 0.8422
+\]
+
+\textbf{Paso 7. Decisión estadística:}
+
+Se evalúan simultáneamente el criterio del valor crítico y el criterio del valor-$p$:
+
+\[
+|Z| = 0.199 < 1.96 \quad \Rightarrow \quad \textbf{No se rechaza } H_0
+\]
+
+\[
+\text{valor-}p = 0.8422 > \alpha = 0.05 \quad \Rightarrow \quad
+\textbf{No se rechaza } H_0
+\]
+
+Ambos criterios conducen a la misma conclusión: el estadístico calculado
+($Z = 0.199$) se encuentra dentro de la región de no rechazo
+($-1.96 < 0.199 < 1.96$), y el valor-$p$ ($0.8422$) supera ampliamente el
+nivel de significancia ($\alpha = 0.05$).
+
+\textbf{Interpretación:} con un nivel de significancia del 5\,\%, no existe evidencia
+estadística suficiente para afirmar que el tiempo promedio de respuesta de los
+estudiantes difiere de 50 segundos. El valor-$p = 0.8422$ indica que, si $H_0$ fuera
+verdadera, existiría un 84.22\,\% de probabilidad de observar una media muestral tan
+alejada de 50 s como la obtenida ($\bar{x} = 50.48$ s), lo que confirma que la
+diferencia observada es completamente atribuible a la variabilidad muestral y no a un
+efecto real. Este resultado es coherente con los valores del análisis descriptivo, donde
+la media ($\bar{x} = 50.48$ s) y la mediana ($Md = 50$ s) se ubican prácticamente sobre
+el valor de referencia, como se aprecia en las Figuras~\ref{fig:histograma}
+y~\ref{fig:caja}.
+
+% -------------------------------------------------
+% CONCLUSIONES
+% -------------------------------------------------
+\section{Conclusiones}
+
+\begin{itemize}[leftmargin=1.2cm]
+    \item La muestra simulada de 60 datos permitió aplicar de forma completa los
+          principales conceptos de la estadística descriptiva e inferencial empleando
+          herramientas computacionales en Python.
+
+    \item La media aritmética fue de 50.48 s y la mediana fue de 50 s, lo cual indica
+          una concentración de los tiempos de respuesta en la parte central de la
+          distribución.
+
+    \item La distribución es multimodal, debido a que los valores 27, 41, 47, 50, 54
+          y 60 segundos presentaron la misma frecuencia máxima (2 repeticiones
+          cada uno).
+
+    \item La varianza muestral fue de 348.46 s$^2$ y la desviación estándar de 18.67
+          s, resultados que evidencian una dispersión moderada. El coeficiente de
+          variación del 36.98\,\% clasifica la muestra como moderadamente heterogénea.
+
+    \item El rango de 80 s y el Rango Intercuartílico (RIC) de 26.25 s muestran que,
+          aunque existen diferencias amplias entre los extremos (12 s y 92 s), la
+          mayor parte de los datos se concentra en una zona central relativamente
+          estable (entre $Q_1 = 36.50$ s y $Q_3 = 62.75$ s).
+
+    \item Las gráficas elaboradas (Figuras~\ref{fig:histograma} a~\ref{fig:caja})
+          complementan adecuadamente el análisis numérico y permiten interpretar de
+          forma visual la concentración, acumulación y dispersión de la muestra.
+
+    \item El valor mínimo de la muestra fue de 12 segundos y el valor máximo de 92
+          segundos, lo que delimita un rango total de 80 segundos y confirma que todos
+          los datos se encuentran dentro del intervalo permitido.
+
+    \item El coeficiente de curtosis muestral obtenido fue $g_2 = -0.50$, lo que
+          indica que la distribución es \textbf{platicúrtica}: ligeramente más achatada
+          que la distribución normal, con menor concentración de datos en torno a la
+          media y colas más uniformes.
+
+    \item La prueba de hipótesis bilateral planteada ($H_0$: $\mu = 50$ s,
+          $H_1$: $\mu \neq 50$ s) con nivel de significancia $\alpha = 0.05$ arrojó
+          un estadístico $Z = 0.199$ y un valor-$p = 0.8422$. Dado que
+          $|Z| = 0.199 < 1.96$ y valor-$p > \alpha$, \textbf{no se rechaza $H_0$}:
+          no existe evidencia estadística suficiente para afirmar que el tiempo
+          promedio de respuesta difiere de 50 segundos.
+
+    \item Los resultados de la prueba de hipótesis son consistentes con el análisis
+          descriptivo previo: la cercanía entre la media muestral (50.48 s) y el valor
+          de referencia (50 s), junto con el alto valor-$p$ (0.8422), confirman que
+          la diferencia observada es atribuible a la variabilidad propia del muestreo
+          y no a un efecto poblacional real.
+\end{itemize}
+
+% -------------------------------------------------
+% REFERENCIAS
+% -------------------------------------------------
+\section{Referencias}
+
+\begin{itemize}[leftmargin=1.2cm]
+    \raggedright % Evita espacios raros y facilita el corte de líneas
+
+    \item Rojas~Rada, L.~F. y Sánchez~Escobar, A. (2026). 
+    \textit{Informe de análisis estadístico -- documento PDF}. 
+    Repositorio GitHub: \textit{biblioteca-prophet-python}. 
+    Recuperado de: \url{https://github.com/LuisRojasR/biblioteca-prophet-python/blob/8c94871bae57a6c5d2d7cae6ed869f459f7d535e/Talleres%20Probabilidad%20y%20Estadistica/Informe%20de%20an%C3%A1lisis%20estad%C3%ADstico.pdf}
+
+    \item Rojas~Rada, L.~F. y Sánchez~Escobar, A. (2026). 
+    \textit{Validación computacional del análisis estadístico -- código Python}. 
+    Google Colaboratory. Recuperado de: 
+    \url{https://colab.research.google.com/drive/1riZwUWHigjchCFgcGBNGb3CCEc0Y06RA?usp=sharing}
+
+    \item Triola, M. F. (2018). \textit{Estadística} (12.ª ed.). Pearson Educación.
+
+    \item Walpole, R. E., Myers, R. H., Myers, S. L., \& Ye, K. (2012). 
+    \textit{Probabilidad y estadística para ingeniería y ciencias} (9.ª ed.). 
+    Pearson Educación.
+\end{itemize}
+
+\end{document}
